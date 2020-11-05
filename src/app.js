@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
-const lecturaArchivos = require('./modulos/lecturaArchivos');
+//const lecturaArchivos = require('./modulos/lecturaArchivos');
 
 // Conectando a db.
 mongoose.connect('mongodb://localhost/asistencias-mongo');

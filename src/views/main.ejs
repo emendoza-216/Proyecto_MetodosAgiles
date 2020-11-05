@@ -1,20 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+    <title>Asistencias</title>
     <style>
-        body{
-            font-family:Arial, Helvetica, sans-serif
+        body {
+            font-family: Arial, Helvetica, sans-serif
         }
     </style>
 </head>
+
 <body>
+    <!-- Aquí comienzan los scripts.-->
+    <script>
+        // Función que valida tanto la extensión del archivo así como si se elegió uno.
+        function validarArchivoSeleccionado(nombreArchivo) {
+            var extension_permitida = "csv";
+            var extension_archivo = nombreArchivo.split('.').pop(); // Explicación -> https://www.geeksforgeeks.org/how-to-get-file-extensions-using-javascript/#:~:text=Using%20split()%20and%20pop()%20method%3A&text=The%20first%20part%20will%20be,extension%20of%20the%20file%20selected.
+            var bt = document.getElementById('subir');
+
+            if (extension_permitida == extension_archivo) {
+                bt.disabled = false;
+                return true; // Válido.
+            }
+            alert("Archivo inválido. Seleccione un archivo .csv")
+            bt.disabled = true;
+            return false; // No válido.
+        }
+    </script>
+
     <h1>Subir lista de asistencia</h1>
     <form action="/asistencias" enctype="multipart/form-data" method="POST">
-        <input type="file" name="archivo"><br>
-        <input type="submit" value="Subir Archivo"/>
+        <input type="file" id="archivo" name="archivo" value="Seleccionar archivo" onchange="validarArchivoSeleccionado(this.value);"><br>
+        <input type="submit" id="subir" value="Subir Archivo" disabled/>
     </form>
 </body>
+
 </html>

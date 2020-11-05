@@ -21,6 +21,7 @@ function interpretarCsv(contenido) {
 
     var listaObj = {
         "curso" : curso, 
+        "unidad" : 1,
         "fecha" : fecha,
         "asistencias" : asistencias
     };
@@ -28,7 +29,7 @@ function interpretarCsv(contenido) {
     return listaObj;
 }
 
-function leerArchivo(dir) {
+function leerArchivo(dir, callback) {
     fs.readFile(dir, 'utf8' , (err, data) => {
         if (err) {
             console.error(err)
@@ -45,6 +46,8 @@ function leerArchivo(dir) {
         listaObj.asistencias.forEach(element => {
             console.log(element);
         });
+
+        callback(listaObj);
     })
 }
 

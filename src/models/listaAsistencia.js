@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
-const esquema = new mongoose.Schema({
-    curso: String,
+const asistencias = new mongoose.Schema({
+    grupoID : String,
+    unidad: Number,
     fecha: String,
     asistencias: [{
         type: String
     }]
 });
 
-module.exports = mongoose.model('listaAsistencia', esquema);
+module.exports = mongoose.model('listaAsistencia', asistencias);
