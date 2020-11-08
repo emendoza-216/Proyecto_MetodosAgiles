@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <!-- Aquí comienzan los scripts.-->
+    <!-- Aquí comienzan los scripts -->
     <script>
         // Función que valida tanto la extensión del archivo así como si se elegió uno.
         function validarArchivoSeleccionado(nombreArchivo) {
@@ -25,7 +25,7 @@
                 bt.disabled = false;
                 return true; // Válido.
             }
-            alert("Archivo inválido. Seleccione un archivo .csv")
+            alert("Archivo inválido. Seleccione un archivo .csv");
             bt.disabled = true;
             return false; // No válido.
         }
@@ -33,8 +33,9 @@
 
     <h1>Subir lista de asistencia</h1>
     <form action="/asistencias" enctype="multipart/form-data" method="POST">
-        <input type="file" id="archivo" name="archivo" value="Seleccionar archivo" onchange="validarArchivoSeleccionado(this.value);"><br>
-        <input type="submit" id="subir" value="Subir Archivo" disabled/>
+        <input type="file" id="archivo" name="archivo" value="Seleccionar archivo"
+            onchange="validarArchivoSeleccionado(this.value);"><br>
+        <input type="submit" id="subir" value="Subir Archivo" disabled />
     </form>
 </body>
 

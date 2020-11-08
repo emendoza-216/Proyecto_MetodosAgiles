@@ -4,13 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear cursos</title>
+    <title>Cursos</title>
 </head>
 
 <body>
+    <!-- Aquí comienzan los scripts -->
+    <script>
+        // Función valida el elemento input.
+        function validar() {
+            // Variable que usaremos para determinar si el input es válido.
+            let esValido = false;
+            // Input a validar.
+            const input = document.forms['cursoForma']['curso'];
+            // Div con el mensaje de advertencia.
+            const mensaje = document.getElementById('mensaje');
+            input.willValidate = false;
+            // Tamaño máximo para el input.
+            const limite = 50;
+            // El regex que vamos a comprobar.
+            const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
+
+            // Primera validación: si input esta vacio entonces no es válido.
+            if (!input.value) {
+                esValido = false;
+            } else {
+                // Segunda validacián: si input es mayor que 50.
+                if (input.value.length > limite) {
+                    esValido = false;
+                } else {
+                    // Tercera validación: si input contiene caracteres diferentes a los permitidos.
+                    if (!regex.test(input.value)) {
+                        // Si queremos agregar letras acentuadas y/o letra ñ debemos usar
+                        // codigos de Unicode (ejemplo: Ñ: \u00D1  ñ: \u00F1)
+                        esValido = false;
+                    } else {
+                        // Si pasamos todas la validaciones anteriores, entonces el input es válido.
+                        esValido = true;
+                    }
+                }
+            }
+            // Coloreando el borde del input.
+            if (!esValido) {
+                // Rojo: no es válido.
+                input.style.borderColor = 'salmon';
+                // Mostramos mensaje
+                mensaje.hidden = false;
+            } else {
+                // Verde: si es válido.
+                input.style.borderColor = 'palegreen';
+                // Ccultamos mensaje;
+                mensaje.hidden = true;
+            }
+            // Devolvemos el valor de esValido.
+            return esValido;
+        }
+
+        // Función que verifica si el campo es válido antes de realizar cualquier otra acción.
+        function verificar() {
+            const valido = validar();
+            if (!valido) {
+                alert('El campo no es válido.');
+            } else {
+                alert('El campo es válido');
+            }
+        }
+    </script>
+
     <h1>Crear curso</h1>
-    <form name="cursoForm" action="/cursos" method="POST">
-        <input type="text" name="nombre" placeholder="Ingresar nombre curso"><br>
+    <form id="cursoForma" name="cursoForma" action="/cursos" onsubmit="return verificar()" method="POST">
+        <label forHTML="curso">Introduzca nombre de curso:</label>
+        <br>
+        <input type="text" id="curso" name="curso" onkeyup="validar()" onblur="validar()" />
+        <div id="mensaje" style="position: absolute; left: 10px; top: 130px; background-color: Yellow; z-index: 10"
+            hidden>
+            Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres.
+        </div>
         <input type="submit" value="Crear curso" />
     </form>
 </body>
