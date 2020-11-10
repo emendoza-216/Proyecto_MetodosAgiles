@@ -10,6 +10,7 @@ router.use(busboy());
 
 const listaAsistenciaModel = require('../models/listaAsistencia');
 const grupoModel = require('../models/grupo');
+const { render } = require('ejs');
 
 router.post('/asistencias', (req, res, next) => {
     console.log("llega un post");
@@ -27,10 +28,10 @@ router.post('/asistencias', (req, res, next) => {
     });
 });
 
-router.get('/asistencias', async(req, res) => {
+router.get('/asistencias', async (req, res) => {
     const listaAsistencia = await listaAsistenciaModel.find().populate('grupo').exec();
     console.log(listaAsistencia);
-    res.render('main', {listaAsistencia});
+    res.render('main', { listaAsistencia });
 });
 
 router.get('/cursos', async (req, res) => {
@@ -39,8 +40,13 @@ router.get('/cursos', async (req, res) => {
 
 router.post('/cursos', (req, res, next) => {
     const curso = req.body.curso;
-    conexion.crearCurso(curso);
-    res.render('cursos');
+    const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
+    if (typeof (curso) == "undefined" || !regex.test(curso)) { // No es válido.
+        res.render('cursos');
+    } else {
+        conexion.crearCurso(curso);
+        res.render('cursos')
+    }
 });
 
 module.exports = router;
