@@ -31,12 +31,41 @@
         }
     </script>
 
-    <h1>Subir lista de asistencia</h1>
+    <h1>Listas de asistencia</h1>
+    <br>
+    <div>Subir lista de asistencia</div>
     <form action="/asistencias" enctype="multipart/form-data" method="POST">
         <input type="file" id="archivo" name="archivo" value="Seleccionar archivo"
             onchange="validarArchivoSeleccionado(this.value);"><br>
         <input type="submit" id="subir" value="Subir Archivo" disabled />
     </form>
+    <br>
+    <div>Tabla de listas de asistencias guardadas</div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <th>Curso</th>
+            <th>Grupo</th>
+            <th>Fecha</th>
+            <th>Unidad</th>
+            <th>Asistencias</th>
+        </thead>
+
+        <tbody>
+            <% for(var i=0;i<listaAsistencia.length;i++) { %>
+            <tr>
+                <td> <%=listaAsistencia[i].grupo.curso %> </td>
+                <td> <%=listaAsistencia[i].grupo.nombre %> </td>
+                <td> <%=listaAsistencia[i].fecha %> </td>
+                <td> <%=listaAsistencia[i].unidad %> </td>
+                <td> <%=listaAsistencia[i].asistencias %> </td>
+                <td>
+                    <a href="" class="btn btn-success">Aprobar</a>
+                    <a href="" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
 </body>
 
 </html>

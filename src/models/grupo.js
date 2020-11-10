@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const grupo = new mongoose.Schema({
-    grupoID: String,
     nombre: String,
     curso: String,
     alumnos: [{
@@ -9,4 +8,4 @@ const grupo = new mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.model('grupos', grupo);
+module.exports = mongoose.model('grupo', grupo);

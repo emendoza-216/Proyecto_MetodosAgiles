@@ -20,9 +20,9 @@ function interpretarCsv(contenido) {
     }
 
     var listaObj = {
-        "curso" : curso, 
+        "curso" : curso.trim(), 
         "unidad" : 1,
-        "fecha" : fecha,
+        "fecha" : fecha.trim(),
         "asistencias" : asistencias
     };
 
@@ -35,18 +35,19 @@ function leerArchivo(dir, callback) {
             console.error(err)
             return
         }
-
+        /*
         console.log(data)
         console.log("- DATOS -")
-
+        */
         var listaObj = interpretarCsv(data);
+        /*
         console.log("Curso: " + listaObj.curso);
         console.log("Fecha: " + listaObj.fecha);
         console.log("Asistencias: ");
         listaObj.asistencias.forEach(element => {
             console.log(element);
         });
-
+        */
         callback(listaObj);
     })
 }

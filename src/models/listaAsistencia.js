@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
-const asistencias = new mongoose.Schema({
-    grupoID : String,
+const listaAsistencia = new mongoose.Schema({
+    grupo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'grupo',
+    },
     unidad: Number,
     fecha: String,
     asistencias: [{
@@ -9,4 +12,4 @@ const asistencias = new mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.model('listaAsistencia', asistencias);
+module.exports = mongoose.model('listaAsistencia', listaAsistencia);

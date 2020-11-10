@@ -1,36 +1,42 @@
-var mongoClient = require('mongodb').MongoClient;
-var dbo;
-var url = "mongodb://localhost:27017";
+var mongoose = require("mongoose");
 
-mongoClient.connect(url, (error, client) => {
-    if (error) {
-        console.log(error.code);
-    } else {
-        dbo = client.db("asistencias-mongo");
-        console.log("Conectado a la BD");
-    }
+const grupoModel = require('../models/grupo');
+const listaAsistenciaModel = require('../models/listaAsistencia');
+
+mongoose.connect("mongodb://localhost:27017/asistencias-mongo", {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+});
+
+var db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "connection error:"));
+
+db.once("open", function() {
+  console.log("Conectado a la BD.");
 });
 
 function crearCurso(nombre) {
-    var doc = { "nombre": nombre };
-    console.log(doc);
-    dbo.collection("curso").insertOne(doc, (error) => {
-        if (error) {
-            console.log(">> Error: Query inválido.");
-        } else {
-            console.log(">> Curso insertado.");
-        }
+    var doc = new grupoModel({"curso": nombre, "nombre": "Grupo 1"});
+   
+    doc.save(function(err, doc) {
+        if (err) return console.error(err);
+        console.log("Documento insertado.");
     });
 }
 
 function registrarAsistencia(listaAsistencia) {
-    console.log(listaAsistencia);
-    dbo.collection("listaAsistencia").insertOne(listaAsistencia, (error) => {
-        if (error) {
-            console.log(">> Error: Query inválido.");
-        } else {
-            console.log(">> Lista Asistencia insertada.");
-        }
+    grupoModel.findOne({"curso": listaAsistencia.curso}, '_id', function(err, grupo) {
+        if (err) return handleError(err);
+
+        listaAsistencia.grupo = grupo._id;
+
+        var doc = new listaAsistenciaModel(listaAsistencia);
+
+        doc.save(function(err, doc) {
+            if (err) return console.error(err);
+            console.log("Documento insertado.");
+        });
     });
 }
 

@@ -6,11 +6,10 @@ var busboy = require('connect-busboy');
 var conexion = require('../modulos/conexion');
 var lecturaArchivos = require('../modulos/lecturaArchivos');
 
-const grp = require('../models/grupo');
-
 router.use(busboy());
 
-//const ListaAsistencia = require('../models/listaAsistencia');
+const listaAsistenciaModel = require('../models/listaAsistencia');
+const grupoModel = require('../models/grupo');
 
 router.post('/asistencias', (req, res, next) => {
     console.log("llega un post");
@@ -28,18 +27,19 @@ router.post('/asistencias', (req, res, next) => {
     });
 });
 
-router.get('/asistencias', async (req, res) => {
-    //const listaAsistencia = await ListaAsistencia.find();
-    res.render('main');
+router.get('/asistencias', async(req, res) => {
+    const listaAsistencia = await listaAsistenciaModel.find().populate('grupo').exec();
+    console.log(listaAsistencia);
+    res.render('main', {listaAsistencia});
 });
 
 router.get('/cursos', async (req, res) => {
     res.render('cursos');
 });
 
-router.post('/cursos', async (req, res, next) => {
-    const curso = req.params.curso;
-    await grp.insertMany(curso);
+router.post('/cursos', (req, res, next) => {
+    const curso = req.body.curso;
+    conexion.crearCurso(curso);
     res.render('cursos');
 });
 
