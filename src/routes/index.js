@@ -45,8 +45,18 @@ router.post('/cursos', (req, res, next) => {
         res.render('cursos');
     } else {
         conexion.crearCurso(curso);
-        res.render('cursos')
+        res.render('cursos');
     }
+});
+
+router.get('/grupos', async (req, res) => {
+    res.render('grupos');
+});
+
+router.post('/grupos', async (req, res, next) => {
+    const grupo = req.body.grupo;
+    await conexion.crearGrupo(grupo);
+    res.render('grupos');
 });
 
 module.exports = router;
