@@ -10,7 +10,17 @@
 <body>
     <h1>Crear grupo</h1>
     <form id="grupoForma" action="/grupos" method="POST">
+        <label for="grupo">Grupo</label>
         <input type="text" id="grupo" name="grupo" />
+        <br>
+        <label for="">Curso</label>
+        <select id="curso" name="curso">
+            <% cursos.forEach(function(cur){ %>
+                <option value="<%= cur.nombre %>">
+                    <%= cur.nombre %>
+                </option>
+            <% }); %>
+        </select>
         <input type="submit" value="Crear grupo" />
     </form>
 </body>

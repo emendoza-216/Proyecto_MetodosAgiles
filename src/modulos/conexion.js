@@ -1,7 +1,9 @@
 var mongoose = require("mongoose");
 
 const grupoModel = require('../models/grupo');
+const cursoModel = require('../models/curso');
 const listaAsistenciaModel = require('../models/listaAsistencia');
+const curso = require("../models/curso");
 
 mongoose.connect("mongodb://localhost:27017/asistencias-mongo", {
     useUnifiedTopology: true,
@@ -16,37 +18,47 @@ db.once("open", function () {
     console.log("Conectado a la BD.");
 });
 
-function crearGrupo(nombre) {
-    var doc = new grupoModel({ "grupo": nombre, "nombre": "Grupo 1" });
+function handleError(err){
+    console.log(err);
+}
 
-    doc.save(function (err, doc) {
-        if (err) return console.error(err);
-        console.log("Grupo insertado." + doc);
+function crearGrupo(nombreGrupo, nombreCurso) {
+    cursoModel.findOne({"nombre": nombreCurso}, '_id', function (err, curso) {
+        if (err) return handleError(err);
+
+        var doc = new grupoModel({"nombre": nombreGrupo, curso: curso._id});
+
+        doc.save(function (err, doc) {
+            if (err) return console.error(err);
+            console.log("Grupo insertado." + doc);
+        });
     });
 }
 
 function crearCurso(nombre) {
-    var doc = new grupoModel({ "curso": nombre, "nombre": "Curso 1" });
+    var doc = new cursoModel({"nombre": nombre});
 
     doc.save(function (err, doc) {
         if (err) return console.error(err);
-        console.log("Documento insertado.");
+        console.log("Curso insertado.");
     });
 }
 
 function registrarAsistencia(listaAsistencia) {
-    grupoModel.findOne({ "curso": listaAsistencia.curso }, '_id', function (err, grupo) {
-        if (err) return handleError(err);
+    cursoModel.findOne({"nombre": listaAsistencia.curso}, '_id', function (err, curso) {
+        grupoModel.findOne({"curso": curso._id }, '_id', function (err, grupo) {
+            if (err) return handleError(err);
 
-        listaAsistencia.grupo = grupo._id;
+            listaAsistencia.grupo = grupo._id;
 
-        var doc = new listaAsistenciaModel(listaAsistencia);
+            var doc = new listaAsistenciaModel(listaAsistencia);
 
-        doc.save(function (err, doc) {
-            if (err) return console.error(err);
-            console.log("Documento insertado.");
+            doc.save(function (err, doc) {
+                if (err) return console.error(err);
+                console.log("Documento insertado.");
+            });
         });
-    });
+    })
 }
 
 module.exports.registrarAsistencia = registrarAsistencia;
