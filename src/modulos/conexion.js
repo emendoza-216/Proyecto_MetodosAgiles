@@ -35,6 +35,12 @@ function crearGrupo(nombreGrupo, nombreCurso) {
     });
 }
 
+async function obtenerCurso(nombre) {
+    const curso = await cursoModel.findOne({"nombre": nombre});
+    
+    return curso
+}
+
 function crearCurso(nombre) {
     var doc = new cursoModel({"nombre": nombre});
 
@@ -62,6 +68,7 @@ function registrarAsistencia(listaAsistencia) {
 }
 
 module.exports.registrarAsistencia = registrarAsistencia;
+module.exports.obtenerCurso = obtenerCurso;
 module.exports.crearCurso = crearCurso;
 module.exports.crearGrupo = crearGrupo;
 

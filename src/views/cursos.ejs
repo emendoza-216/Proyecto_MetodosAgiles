@@ -81,6 +81,13 @@
         </div>
         <input type="submit" value="Crear curso" />
     </form>
+
+    <% if(res == 0){ %>
+        <script>alert("Curso agregado.");</script>
+    <% } %>
+    <% if(res == 1){ %>
+            <script>alert("Un curso con este nombre ya existe.");</script>
+    <% } %>
 </body>
 
 </html>

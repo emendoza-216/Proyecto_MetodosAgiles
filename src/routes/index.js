@@ -45,17 +45,24 @@ router.get('/asistencias', async (req, res) => {
 });
 
 router.get('/cursos', async (req, res) => {
-    res.render('cursos');
+    res.render('cursos', {res: null});
 });
 
-router.post('/cursos', (req, res, next) => {
+router.post('/cursos', async(req, res, next) => {
     const curso = req.body.curso;
     const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
     if (typeof(curso) == "undefined" || !regex.test(curso)) { // No es válido.
-        res.render('cursos');
+        res.render('cursos', {res: null});
     } else {
-        conexion.crearCurso(curso);
-        res.render('cursos');
+        const existe = await conexion.obtenerCurso(curso);
+        console.log(existe);
+        if(existe == null) { //no existe
+            conexion.crearCurso(curso);
+            res.render('cursos', {res: 0});
+        } 
+        else { //ya existe
+            res.status(401).render('cursos', {res: 1});
+        }
     }
 });
 
