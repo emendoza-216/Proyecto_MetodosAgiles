@@ -40,7 +40,7 @@ router.get('/asistencias', async (req, res) => {
         };
 
         console.log("Final " + listaAsistencia);
-        res.render('main', { listaAsistencia });
+        res.render('RegistrarAsistencias', { listaAsistencia });
     });
 });
 

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset=utf-8>
+		<title>Registrar Asistencias</title>
+  		<link rel="stylesheet" href="css/RegistrarAsistencias.css" type="text/css">
+  		<script src="../javascript/RegistrarAsistencias.js"></script>
+  		<script src="https://kit.fontawesome.com/fd4468dbd1.js" crossorigin="anonymous"></script>
+	</head>
+
+	<body>
+
+		<div class="sidebar">
+			<nav>
+				<a href="#">Menú Principal</a>
+
+				<button id="0" class="dropdown-btn" onclick="dropDown(id)">Curso<span class="fa fa-caret-down"></span></button>
+				<div class="dropdown-container">
+					<a href="#">Crear</a>
+					<a href="#">Editar</a>
+					<a href="#">Eliminar</a>
+				</div>
+				
+				<button id="1" class="dropdown-btn" onclick="dropDown(id)">Grupo<span class="fa fa-caret-down"></span></button>
+				<div class="dropdown-container">
+					<a href="#">Crear</a>
+					<a href="#">Editar</a>
+					<a href="#">Eliminar</a>
+				</div>
+				
+				<button id="2" class="dropdown-btn" onclick="dropDown(id)">Unidad<span class="fa fa-caret-down"></span></button>
+				<div class="dropdown-container">
+					<a href="#">Crear</a>
+					<a href="#">Editar</a>
+					<a href="#">Eliminar</a>
+				</div>
+				
+			</nav>
+		</div>
+
+		<section class="pagecontent">
+			<h1 class="title">Registrar Asistencias</h1>
+			<div class="float-left">
+				<p>Seleccione el Curso</p>
+				<div class="custom-select" style="width:200px;">
+					<select>
+						<option value="0">Curso</option>
+					</select>
+				</div>
+				<br>
+
+				<p>Seleccione la Unidad</p>
+				<div class="custom-select" style="width:200px;">
+					<select>
+						<option value="0">Unidad</option>
+					</select>
+				</div>
+				<br>
+
+				<p>Selecciones el Grupo</p>
+				<div class="custom-select" style="width:200px;">
+					<select>
+						<option value="0">Grupo</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="float-right">
+				<div id="dropzone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+			  		<div class="centerheight">
+				  		<img src="../images/upload_icon_v2.png" alt="upload"></img>
+			  			<br>
+				  		<p>ARRASTRA AQUÍ LAS LISTAS DE ASISTENCIA</p>
+				  	</div>
+				</div>
+			
+				<br>
+
+				<div id="selectfiles">
+					<form action="/asistencias" enctype="multipart/form-data" method="POST">
+						<label for="myfile">Selecciona la lista de asistencia:</label>
+				        <input type="file" id="archivo" name="archivo" value="Seleccionar archivo" onchange="validarArchivoSeleccionado(this.value);"/>
+			            <br><br>
+				        <input type="submit" id="subir" value="Subir Archivo" disabled />
+				    </form>
+				</div>
+			</div>
+			<div>
+				<table class="table table-bordered table-hover">
+			        <thead>
+			            <th>Curso</th>
+			            <th>Grupo</th>
+			            <th>Fecha</th>
+			            <th>Unidad</th>
+			            <th>Asistencias</th>
+			        </thead>
+
+			        <tbody>
+			            <% for(var i=0;i<listaAsistencia.length;i++) { %>
+			            <tr>
+			                <td> <%=listaAsistencia[i].grupo.curso.nombre %> </td>
+			                <td> <%=listaAsistencia[i].grupo.nombre %> </td>
+			                <td> <%=listaAsistencia[i].fecha %> </td>
+			                <td> <%=listaAsistencia[i].unidad %> </td>
+			                <td> <%=listaAsistencia[i].asistencias %> </td>
+			                <td>
+			                    <a href="" class="btn btn-success">Aprobar</a>
+			                    <a href="" class="btn btn-danger">Eliminar</a>
+			                </td>
+			            </tr>
+			            <% } %>
+			        </tbody>
+			    </table>
+			</div>
+		</section>
+
+		<!-- Aquí comienzan los scripts -->
+	    <script>
+	        // Función que valida tanto la extensión del archivo así como si se elegió uno.
+	        function validarArchivoSeleccionado(nombreArchivo) {
+	            var extension_permitida = "csv";
+	            var extension_archivo = nombreArchivo.split('.').pop(); // Explicación -> https://www.geeksforgeeks.org/how-to-get-file-extensions-using-javascript/#:~:text=Using%20split()%20and%20pop()%20method%3A&text=The%20first%20part%20will%20be,extension%20of%20the%20file%20selected.
+	            var bt = document.getElementById('subir');
+
+	            if (extension_permitida == extension_archivo) {
+	                bt.disabled = false;
+	                return true; // Válido.
+	            }
+	            alert("Archivo inválido. Seleccione un archivo .csv");
+	            bt.disabled = true;
+	            return false; // No válido.
+	        }
+	    </script>
+
+	</body>
+
+</html>

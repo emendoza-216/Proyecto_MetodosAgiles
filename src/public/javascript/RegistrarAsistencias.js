@@ -21,9 +21,16 @@ function dropHandler(event) {
           // Use DataTransferItemList interface to access the file(s)
           for (var i = 0; i < event.dataTransfer.items.length; i++) {
             // If dropped items aren't files, reject them
-            if (event.dataTransfer.items[i].kind === 'file') {
+            if (event.dataTransfer.items[i].kind === 'file') {   
                 var file = event.dataTransfer.items[i].getAsFile();
-                console.log('... file[' + i + '].name = ' + file.name);
+                var fileExtension = file.name.split('.').pop();
+                var aceptedExtension = "csv";
+                if (aceptedExtension === fileExtension) {     
+                    //do something
+                    console.log('... file[' + i + '].name = ' + file.name);
+                } else {
+                    console.log("isn't .csv file");
+                }
             }
         }
     } else {

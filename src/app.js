@@ -23,9 +23,12 @@ app.use(express.urlencoded({ extended: false }));
 // Rutas.
 app.use('/', indexRoutes);
 
+// Directorio publico de donde se obtienen los archivos estaticos.
+app.use(express.static(__dirname + '/public'));
+
 // Iniciando server...
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`);
-    
+
     //lecturaArchivos.prueba();
 });
