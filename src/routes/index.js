@@ -50,7 +50,7 @@ router.get('/cursos', async (req, res) => {
 
 router.post('/cursos', async(req, res, next) => {
     const curso = req.body.curso;
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
+    const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ _\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ _\u00f1\u00d1]+$', 'i');
     if (typeof(curso) == "undefined" || !regex.test(curso)) { // No es válido.
         res.render('cursos', {res: null});
     } else {
@@ -60,7 +60,7 @@ router.post('/cursos', async(req, res, next) => {
             conexion.crearCurso(curso);
             res.render('cursos', {res: 0});
         } 
-        else { //ya existe
+        else { // Ya existe.
             res.status(401).render('cursos', {res: 1});
         }
     }

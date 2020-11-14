@@ -10,6 +10,8 @@
 <body>
     <!-- Aquí comienzan los scripts -->
     <script>
+
+
         // Función valida el elemento input.
         function validar() {
             // Variable que usaremos para determinar si el input es válido.
@@ -22,7 +24,7 @@
             // Tamaño máximo para el input.
             const limite = 50;
             // El regex que vamos a comprobar.
-            const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
+            const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ _\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ _\u00f1\u00d1]+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
 
             // Primera validación: si input esta vacio entonces no es válido.
             if (!input.value) {
@@ -32,10 +34,8 @@
                 if (input.value.length > limite) {
                     esValido = false;
                 } else {
-                    // Tercera validación: si input contiene caracteres diferentes a los permitidos.
-                    if (!regex.test(input.value)) {
-                        // Si queremos agregar letras acentuadas y/o letra ñ debemos usar
-                        // codigos de Unicode (ejemplo: Ñ: \u00D1  ñ: \u00F1)
+                    // Tercera validación: si input contiene caracteres diferentes a los permitidos, espacios seguidos o espacios al inicio o fin del nombre.
+                    if (!regex.test(input.value) || input.value.match(/\s\s/) || input.value[0] == ' ' || input.value[input.value.length - 1] == ' ') {
                         esValido = false;
                     } else {
                         // Si pasamos todas la validaciones anteriores, entonces el input es válido.
@@ -77,16 +77,16 @@
         <input type="text" id="curso" name="curso" onkeyup="validar()" onblur="validar()" />
         <div id="mensaje" style="position: absolute; left: 10px; top: 130px; background-color: Yellow; z-index: 10"
             hidden>
-            Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres.
+            Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres. Evite espacios al inicio o final del nombre.
         </div>
         <input type="submit" value="Crear curso" />
     </form>
 
     <% if(res == 0){ %>
-        <script>alert("Curso agregado.");</script>
+    <script>alert("Curso agregado.");</script>
     <% } %>
     <% if(res == 1){ %>
-            <script>alert("Un curso con este nombre ya existe.");</script>
+    <script>alert("Un curso con este nombre ya existe.");</script>
     <% } %>
 </body>
 
