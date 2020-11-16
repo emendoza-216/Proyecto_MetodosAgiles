@@ -50,8 +50,8 @@ router.get('/cursos', async (req, res) => {
 
 router.post('/cursos', async(req, res, next) => {
     const curso = req.body.curso;
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ _\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ _\u00f1\u00d1]+$', 'i');
-    if (typeof(curso) == "undefined" || !regex.test(curso)) { // No es válido.
+    const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
+    if (typeof(curso) == "undefined" || curso.length > 50 || !regex.test(curso)) { // No es válido.
         res.render('cursos', {res: null});
     } else {
         const existe = await conexion.obtenerCurso(curso);
@@ -60,7 +60,7 @@ router.post('/cursos', async(req, res, next) => {
             conexion.crearCurso(curso);
             res.render('cursos', {res: 0});
         } 
-        else { // Ya existe.
+        else { //ya existe
             res.status(401).render('cursos', {res: 1});
         }
     }
@@ -75,8 +75,14 @@ router.get('/grupos', async (req, res) => {
 router.post('/grupos', async (req, res, next) => {
     const grupo = req.body.grupo;
     const curso = req.body.curso;
-    await conexion.crearGrupo(grupo, curso);
-    res.redirect('back');
+
+    const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
+    if (typeof(grupo) == "undefined" || typeof(curso) == "undefined" || grupo.length > 50 || !regex.test(grupo) ) { // No es válido.
+        res.render('grupos');
+    } else {
+        await conexion.crearGrupo(grupo, curso);
+        res.redirect('back');
+    }
 });
 
 module.exports = router;
