@@ -36,8 +36,7 @@ function crearGrupo(nombreGrupo, nombreCurso) {
 }
 
 async function obtenerCurso(nombre) {
-    const curso = await cursoModel.findOne({"nombre": nombre});
-    
+    const curso = await cursoModel.find();
     return curso
 }
 

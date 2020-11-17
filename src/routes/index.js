@@ -55,13 +55,19 @@ router.post('/cursos', async(req, res, next) => {
         res.render('cursos', {res: null});
     } else {
         const existe = await conexion.obtenerCurso(curso);
-        console.log(existe);
-        if(existe == null) { //no existe
-            conexion.crearCurso(curso);
-            res.render('cursos', {res: 0});
-        } 
-        else { //ya existe
-            res.status(401).render('cursos', {res: 1});
+
+        for (let index = 0; index < existe.length; index++) {
+            const element = existe[index];
+            if(curso.toUpperCase() == element.nombre.toUpperCase()){//ya existe
+                console.log("esta repetido")
+                res.status(401).render('cursos', {res: 1});
+                break
+            }
+            if(index+1 == existe.length){//no existe
+                console.log("no esta repetido se crea")
+                conexion.crearCurso(curso);
+                res.render('cursos', {res: 0});
+            }
         }
     }
 });
