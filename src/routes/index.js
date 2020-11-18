@@ -81,7 +81,7 @@ router.get('/grupos', async (req, res) => {
 router.post('/grupos', async (req, res, next) => {
     const grupo = req.body.grupo;
     const curso = req.body.curso;
-
+    
     const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
     if (typeof(grupo) == "undefined" || typeof(curso) == "undefined" || grupo.length > 50 || !regex.test(grupo) ) { // No es válido.
         res.render('grupos');
