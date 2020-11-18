@@ -1,7 +1,7 @@
 {
   "name": "crud-nodejs-mongodb",
   "version": "1.0.0",
-  "description": "",
+  "description": "Proyecto de la clase de Métodos Ágiles de Desarrollo",
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
     "connect-busboy": "0.0.2",
     "connect-flash": "^0.1.1",
     "ejs": "^3.1.5",
@@ -20,5 +22,13 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gochoa032/Proyecto_MetodosAgiles.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gochoa032/Proyecto_MetodosAgiles/issues"
+  },
+  "homepage": "https://github.com/gochoa032/Proyecto_MetodosAgiles#readme"
 }

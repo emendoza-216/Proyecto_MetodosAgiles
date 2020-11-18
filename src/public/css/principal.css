@@ -1,0 +1,76 @@
+:root {
+	--white: #ccc;
+	--light_blue: #8cceff;
+	--dark_blue: #151019;
+	--black: #111;
+	--bg_image: url(../images/tech_background.png);
+	--sidebar_fontsize: 20px;
+	--sidebar_size: 13%;
+}
+
+body {
+	background-image: var(--bg_image);
+}
+
+.modelo {
+	padding: 25px;
+}
+
+.modelo select {
+	width: 300px;
+	height: 40px;
+	text-align: center;
+}
+
+.modelo button {
+	background-color: var(--light_blue);
+	color: var(--dark_blue);
+	border: transparent solid 1px;
+	width: 90px;
+	height: 40px;
+	margin-left: 5px;
+}
+
+.modelo button:hover {
+	border: var(--light_blue) solid 1px;
+}
+
+.modelo button:active {
+	background-color: var(--dark_blue);
+	color: var(--light_blue);
+	border: var(--light_blue) solid 1px;
+}
+
+
+/**
+'use strict';
+
+const e = React.createElement;
+
+class LikeButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { liked: false };
+  }
+
+  render() {
+    if (this.state.liked) {
+      return 'You liked this.';
+    }
+
+    return e(
+      'button',
+      { onClick: () => this.setState({ liked: true }) },
+      'Like'
+    );
+  }
+}
+
+ReactDOM.render(
+  <h1>Hello, world!</h1>,
+  document.getElementById('root')
+);
+
+const domContainer = document.querySelector('#like_button_container');
+ReactDOM.render(e(LikeButton), domContainer);
+**/
