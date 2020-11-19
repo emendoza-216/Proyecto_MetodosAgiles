@@ -32,9 +32,9 @@ router.post('/asistencias', (req, res, next) => {
 router.get('/asistencias', async (req, res) => {
     const listaAsistencia = [];
 
-    await listaAsistenciaModel.find().populate('grupo').exec(async(err, lista) => {
-        for(var i=0; i<lista.length; i++) {
-            const curso = await cursoModel.findOne({"_id":lista[i].grupo.curso}).exec();
+    await listaAsistenciaModel.find().populate('grupo').exec(async (err, lista) => {
+        for (var i = 0; i < lista.length; i++) {
+            const curso = await cursoModel.findOne({ "_id": lista[i].grupo.curso }).exec();
             lista[i].grupo.curso = curso;
             listaAsistencia.push(lista[i]);
         };
@@ -45,28 +45,28 @@ router.get('/asistencias', async (req, res) => {
 });
 
 router.get('/cursos', async (req, res) => {
-    res.render('cursos', {res: null});
+    res.render('cursos', { res: null });
 });
 
-router.post('/cursos', async(req, res, next) => {
+router.post('/cursos', async (req, res, next) => {
     const curso = req.body.curso;
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
-    if (typeof(curso) == "undefined" || curso.length > 50 || !regex.test(curso)) { // No es válido.
-        res.render('cursos', {res: null});
+    const regex = new RegExp('^[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
+    if (typeof (curso) == "undefined" || curso.length > 50 || !regex.test(curso)) { // No es válido.
+        res.render('cursos', { res: null });
     } else {
         const existe = await conexion.obtenerCurso(curso);
 
         for (let index = 0; index < existe.length; index++) {
             const element = existe[index];
-            if(curso.toUpperCase() == element.nombre.toUpperCase()){//ya existe
+            if (curso.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
                 console.log("esta repetido")
-                res.status(401).render('cursos', {res: 1});
-                break
+                res.status(401).render('cursos', { res: 1 });
+                break;
             }
-            if(index+1 == existe.length){//no existe
+            if (index + 1 == existe.length) { // No existe.
                 console.log("no esta repetido se crea")
                 conexion.crearCurso(curso);
-                res.render('cursos', {res: 0});
+                res.render('cursos', { res: 0 });
             }
         }
     }
@@ -75,19 +75,32 @@ router.post('/cursos', async(req, res, next) => {
 router.get('/grupos', async (req, res) => {
     const cursos = await cursoModel.find();
     console.log(cursos);
-    res.render('grupos', {cursos});
+    res.render('grupos',{ res: null, cursos });
 });
 
 router.post('/grupos', async (req, res, next) => {
     const grupo = req.body.grupo;
     const curso = req.body.curso;
-    
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$', 'i');
-    if (typeof(grupo) == "undefined" || typeof(curso) == "undefined" || grupo.length > 50 || !regex.test(grupo) ) { // No es válido.
-        res.render('grupos');
+    const regex = new RegExp('^[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
+
+    if (typeof (grupo) == "undefined" || typeof (curso) == "undefined" || grupo.length > 50 || !regex.test(grupo)) { // No es válido.
+        res.render('grupos', { res: null });
     } else {
-        await conexion.crearGrupo(grupo, curso);
-        res.redirect('back');
+        const existe = await conexion.obtenerGrupo(grupo);
+
+        for (let index = 0; index < existe.length; index++) {
+            const element = existe[index];
+            if (grupo.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
+                console.log("esta repetido")
+                res.status(401).render('grupos', { res: 1 });
+                break;
+            }
+            if (index + 1 == existe.length) { // No existe.
+                console.log("no esta repetido se crea")
+                await conexion.crearGrupo(grupo, curso);
+                res.render('grupos', { res: 0 });
+            }
+        }
     }
 });
 

@@ -18,15 +18,15 @@ db.once("open", function () {
     console.log("Conectado a la BD.");
 });
 
-function handleError(err){
+function handleError(err) {
     console.log(err);
 }
 
 function crearGrupo(nombreGrupo, nombreCurso) {
-    cursoModel.findOne({"nombre": nombreCurso}, '_id', function (err, curso) {
+    cursoModel.findOne({ "nombre": nombreCurso }, '_id', function (err, curso) {
         if (err) return handleError(err);
 
-        var doc = new grupoModel({"nombre": nombreGrupo, curso: curso._id});
+        var doc = new grupoModel({ "nombre": nombreGrupo, curso: curso._id });
 
         doc.save(function (err, doc) {
             if (err) return console.error(err);
@@ -35,13 +35,18 @@ function crearGrupo(nombreGrupo, nombreCurso) {
     });
 }
 
+async function obtenerGrupo(nombre) {
+    const grupo = await grupoModel.find();
+    return grupo;
+}
+
 async function obtenerCurso(nombre) {
     const curso = await cursoModel.find();
-    return curso
+    return curso;
 }
 
 function crearCurso(nombre) {
-    var doc = new cursoModel({"nombre": nombre});
+    var doc = new cursoModel({ "nombre": nombre });
 
     doc.save(function (err, doc) {
         if (err) return console.error(err);
@@ -50,8 +55,8 @@ function crearCurso(nombre) {
 }
 
 function registrarAsistencia(listaAsistencia) {
-    cursoModel.findOne({"nombre": listaAsistencia.curso}, '_id', function (err, curso) {
-        grupoModel.findOne({"curso": curso._id }, '_id', function (err, grupo) {
+    cursoModel.findOne({ "nombre": listaAsistencia.curso }, '_id', function (err, curso) {
+        grupoModel.findOne({ "curso": curso._id }, '_id', function (err, grupo) {
             if (err) return handleError(err);
 
             listaAsistencia.grupo = grupo._id;
@@ -68,6 +73,7 @@ function registrarAsistencia(listaAsistencia) {
 
 module.exports.registrarAsistencia = registrarAsistencia;
 module.exports.obtenerCurso = obtenerCurso;
+module.exports.obtenerGrupo = obtenerGrupo;
 module.exports.crearCurso = crearCurso;
 module.exports.crearGrupo = crearGrupo;
 
