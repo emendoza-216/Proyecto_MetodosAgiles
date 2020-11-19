@@ -55,6 +55,11 @@ router.post('/cursos', async (req, res, next) => {
         res.render('cursos', { res: null });
     } else {
         const existe = await conexion.obtenerCurso(curso);
+        if(existe[0] == null){
+            console.log("no esta repetido se crea [0]")
+            conexion.crearCurso(curso);
+            res.render('cursos', { res: 0 });
+        }
 
         for (let index = 0; index < existe.length; index++) {
             const element = existe[index];
@@ -88,6 +93,11 @@ router.post('/grupos', async (req, res, next) => {
         res.render('grupos', {cursos, res: null });
     } else {
         const existe = await conexion.obtenerGrupo(grupo);
+        if(existe[0] == null){
+            console.log("no esta repetido se crea")
+            await conexion.crearGrupo(grupo, curso);
+            res.render('grupos', {cursos, res: 0 });
+        }
 
         for (let index = 0; index < existe.length; index++) {
             const element = existe[index];
