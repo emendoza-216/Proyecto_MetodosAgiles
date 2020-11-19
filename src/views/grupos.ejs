@@ -4,96 +4,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/RegistrarAsistencias.css" type="text/css">
+    <script src="../javascript/RegistrarAsistencias.js"></script>
+    <script src="https://kit.fontawesome.com/fd4468dbd1.js" crossorigin="anonymous"></script>
     <title>Crear grupos</title>
 </head>
 
 <body>
-    <!-- Aquí comienzan los scripts -->
-    <script>
-        // Función valida el elemento input.
-        function validar() {
-            // Variable que usaremos para determinar si el input es válido.
-            let esValido = false;
-            // Input a validar.
-            const input = document.forms['grupoForma']['grupo'];
-            // Div con el mensaje de advertencia.
-            const mensaje = document.getElementById('mensaje');
-            input.willValidate = false;
-            // Tamaño máximo para el input.
-            const limite = 50;
-            // El regex que vamos a comprobar.
-            const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
 
-            // Primera validación: si input esta vacio entonces no es válido.
-            if (!input.value) {
-                esValido = false;
-            } else {
-                // Segunda validacián: si input es mayor que 50.
-                if (input.value.length > limite) {
+    <div class="sidebar">
+        <nav>
+            <label>Menú</label>
+            <a href="http://localhost:3000/asistencias">Registrar Asistencia</a>
+
+            <button id="0" class="dropdown-btn" onclick="dropDown(id)">Curso<span class="fa fa-caret-down"></span></button>
+            <div class="dropdown-container">
+                <a href="http://localhost:3000/cursos">Crear</a>
+                <a href="#">Editar</a>
+                <a href="#">Eliminar</a>
+            </div>
+            
+            <button id="1" class="dropdown-btn" onclick="dropDown(id)">Grupo<span class="fa fa-caret-down"></span></button>
+            <div class="dropdown-container">
+                <a href="http://localhost:3000/grupos">Crear</a>
+                <a href="#">Editar</a>
+                <a href="#">Eliminar</a>
+            </div>
+            
+            <button id="2" class="dropdown-btn" onclick="dropDown(id)">Unidad<span class="fa fa-caret-down"></span></button>
+            <div class="dropdown-container">
+                <a href="#">Crear</a>
+                <a href="#">Editar</a>
+                <a href="#">Eliminar</a>
+            </div>
+            
+        </nav>
+    </div>
+
+    <section class="pagecontent">
+        <!-- Aquí comienzan los scripts -->
+        <script>
+            // Función valida el elemento input.
+            function validar() {
+                // Variable que usaremos para determinar si el input es válido.
+                let esValido = false;
+                // Input a validar.
+                const input = document.forms['grupoForma']['grupo'];
+                // Div con el mensaje de advertencia.
+                const mensaje = document.getElementById('mensaje');
+                input.willValidate = false;
+                // Tamaño máximo para el input.
+                const limite = 50;
+                // El regex que vamos a comprobar.
+                const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
+
+                // Primera validación: si input esta vacio entonces no es válido.
+                if (!input.value) {
                     esValido = false;
                 } else {
-                    // Tercera validación: si input contiene caracteres diferentes a los permitidos, espacios seguidos o espacios al inicio o fin del nombre.
-                    if (!regex.test(input.value) || input.value.match(/\s\s/) || input.value[0] == ' ' || input.value[input.value.length - 1] == ' ') {
+                    // Segunda validacián: si input es mayor que 50.
+                    if (input.value.length > limite) {
                         esValido = false;
                     } else {
-                        // Si pasamos todas la validaciones anteriores, entonces el input es válido.
-                        esValido = true;
+                        // Tercera validación: si input contiene caracteres diferentes a los permitidos, espacios seguidos o espacios al inicio o fin del nombre.
+                        if (!regex.test(input.value) || input.value.match(/\s\s/) || input.value[0] == ' ' || input.value[input.value.length - 1] == ' ') {
+                            esValido = false;
+                        } else {
+                            // Si pasamos todas la validaciones anteriores, entonces el input es válido.
+                            esValido = true;
+                        }
                     }
                 }
+                // Coloreando el borde del input.
+                if (!esValido) {
+                    // Rojo: no es válido.
+                    input.style.borderColor = 'salmon';
+                    // Mostramos mensaje
+                    mensaje.hidden = false;
+                } else {
+                    // Verde: si es válido.
+                    input.style.borderColor = 'palegreen';
+                    // Ccultamos mensaje;
+                    mensaje.hidden = true;
+                }
+                // Devolvemos el valor de esValido.
+                return esValido;
             }
-            // Coloreando el borde del input.
-            if (!esValido) {
-                // Rojo: no es válido.
-                input.style.borderColor = 'salmon';
-                // Mostramos mensaje
-                mensaje.hidden = false;
-            } else {
-                // Verde: si es válido.
-                input.style.borderColor = 'palegreen';
-                // Ccultamos mensaje;
-                mensaje.hidden = true;
+
+            // Función que verifica si el campo es válido antes de realizar cualquier otra acción.
+            function verificar() {
+                const valido = validar();
+                if (!valido) {
+                    alert('El campo no es válido.');
+                } else {
+                    alert('El campo es válido');
+                }
             }
-            // Devolvemos el valor de esValido.
-            return esValido;
-        }
+        </script>
 
-        // Función que verifica si el campo es válido antes de realizar cualquier otra acción.
-        function verificar() {
-            const valido = validar();
-            if (!valido) {
-                alert('El campo no es válido.');
-            } else {
-                alert('El campo es válido');
-            }
-        }
-    </script>
+        <h1>Crear grupo</h1>
+        <form id="grupoForma" name="grupoForma" action="/grupos" onsubmit="return verificar()" method="POST">
+            <label for="grupo">Grupo</label>
+            <input type="text" id="grupo" name="grupo" onkeyup="validar()" onblur="validar()" />
+            <br>
+            <label for="">Curso</label>
+            <select id="curso" name="curso">
+                <% cursos.forEach(function(cur){ %>
+                <option value="<%= cur.nombre %>">
+                    <%= cur.nombre %>
+                </option>
+                <% }); %>
+            </select>
+            <div id="mensaje" style="position: absolute;" hidden>
+                Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres. Evite espacios al inicio o final del nombre.
+            </div>
+            <input type="submit" value="Crear grupo" />
+        </form>
 
-    <h1>Crear grupo</h1>
-    <form id="grupoForma" name="grupoForma" action="/grupos" onsubmit="return verificar()" method="POST">
-        <label for="grupo">Grupo</label>
-        <input type="text" id="grupo" name="grupo" onkeyup="validar()" onblur="validar()" />
-        <br>
-        <label for="">Curso</label>
-        <select id="curso" name="curso">
-            <% cursos.forEach(function(cur){ %>
-            <option value="<%= cur.nombre %>">
-                <%= cur.nombre %>
-            </option>
-            <% }); %>
-        </select>
-        <div id="mensaje" style="position: absolute; left: 10px; top: 130px; background-color: Yellow; z-index: 10"
-            hidden>
-            Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres. Evite espacios al inicio o final del nombre.
-        </div>
-        <input type="submit" value="Crear grupo" />
-    </form>
-
-    <% if(res == 0){ %>
-    <script>alert("Grupo agregado.");</script>
-    <% } %>
-    <% if(res == 1){ %>
-    <script>alert("Un grupo con este nombre ya existe.");</script>
-    <% } %>
+        <% if(res == 0){ %>
+        <script>alert("Grupo agregado.");</script>
+        <% } %>
+        <% if(res == 1){ %>
+        <script>alert("Un grupo con este nombre ya existe.");</script>
+        <% } %>
+    </section>
 </body>
 
 </html>

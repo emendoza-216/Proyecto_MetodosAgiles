@@ -52,7 +52,7 @@ body {
 }
 
 /* Style the sidenav links and the dropdown button */
-.sidebar a, .dropdown-btn {
+.sidebar a, .dropdown-btn, label{
 	padding: 6px 8px 6px 16px;
 	text-decoration: none;
 	font-size: var(--sidebar_fontsize);
@@ -68,6 +68,11 @@ body {
 
 .sidebar a:hover, .dropdown-btn:hover {
 	color: white;
+}
+
+.sidebar label {
+	color: var(--black);
+	background-color: var(--light_blue); 
 }
 
 /* Add an active class to the active dropdown button */
