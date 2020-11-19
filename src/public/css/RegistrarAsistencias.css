@@ -1,3 +1,4 @@
+/* Variables para la hoja de estilo */
 :root {
 	--white: #ccc;
 	--light_blue: #8cceff;
@@ -16,6 +17,7 @@ body {
 	font-family: Arial, sans-serif;
 }
 
+/* Estilo para los titulos */
 .title {
 	padding: 10px 20px;
 }
@@ -26,12 +28,14 @@ body {
   	padding: 0px 10px;
 }
 
+/* Columna izquierda */
 .float-left {
     width: 20%;
     float: left;
     padding: 20px;
 } 
 
+/* Columna derecha */
 .float-right {
     width: 70%;
     float: left;
@@ -51,7 +55,7 @@ body {
 	padding-top: 20px;
 }
 
-/* Style the sidenav links and the dropdown button */
+/* Estilo de los botones y los enlaces de la barra de navegación */
 .sidebar a, .dropdown-btn, label{
 	padding: 6px 8px 6px 16px;
 	text-decoration: none;
@@ -66,41 +70,44 @@ body {
 	outline: none;
 }
 
+/* Estilo de los enlaces y botones de la barra de navegación al pasar el cursos por encima */
 .sidebar a:hover, .dropdown-btn:hover {
 	color: white;
 }
 
+/* Estilo de las etiquetas de la barra de navegación */
 .sidebar label {
 	color: var(--black);
 	background-color: var(--light_blue); 
 }
 
-/* Add an active class to the active dropdown button */
+/* Añade una clase activa al boton dropdown */
 .active {
 	background-color: var(--light_blue);
 	color: var(--dark_blue);
 }
 
-/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+/* Contendor dropdown (con el atributo hidden por defecto) */
 .dropdown-container {
 	display: none;
 	padding-left: 8px;
 	background-color: #262626;
 }
 
-/* Optional: Style the caret down icon */
+/* Estilo para el icono */
 .fa-caret-down {
 	float: right;
 	padding-right: 8px;
 }
 
+/* Establece al medio de un altura dada el texto */
 .centerheight {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: normal;
 }
 
-/* */
+/* Estilo para la dropbox */
 div#dropzone {
 	width: 80%;
 	height: 350px;
@@ -113,11 +120,13 @@ div#dropzone {
 	opacity: 95%;
 }
 
+/* Estilo para la imagen de la dropbox */
 #dropzone img {
 	width: 75px;
 	height: 100%;
 }
 
+/* Estilo para la seleccion de archivos. */
 #selectfiles {
-	margin-left: 10%;
+	/*margin-left: 10%;*/
 }
