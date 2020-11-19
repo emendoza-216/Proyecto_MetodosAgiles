@@ -4,6 +4,7 @@ const grupoModel = require('../models/grupo');
 const cursoModel = require('../models/curso');
 const listaAsistenciaModel = require('../models/listaAsistencia');
 const curso = require("../models/curso");
+const grupo = require("../models/grupo");
 
 mongoose.connect("mongodb://localhost:27017/asistencias-mongo", {
     useUnifiedTopology: true,
@@ -54,23 +55,54 @@ function crearCurso(nombre) {
     });
 }
 
-function registrarAsistencia(listaAsistencia) {
+async function obtenerAsistenciasCallback(callback) {
+    listaAsistenciaModel.find().populate('grupo').exec(async(err, lista) => {
+        const listaAsistencia = [];
+        
+        for (var i = 0; i < lista.length; i++) {
+            const curso = await cursoModel.findOne({ "_id": lista[i].grupo.curso }).exec();
+            lista[i].grupo.curso = curso;
+            listaAsistencia.push(lista[i]);
+        };
+
+        callback(listaAsistencia);
+        //console.log("Final " + listaAsistencia);
+    });
+}
+
+function registrarAsistencia(listaAsistencia, resCallback) {
     cursoModel.findOne({ "nombre": listaAsistencia.curso }, '_id', function (err, curso) {
-        grupoModel.findOne({ "curso": curso._id }, '_id', function (err, grupo) {
-            if (err) return handleError(err);
+        grupoModel.find({"curso": curso._id }, null, function (err, grupos) {
+            var encontrado = false;
 
-            listaAsistencia.grupo = grupo._id;
+            for (let index = 0; index < grupos.length; index++) {
+                var grupo = grupos[index];
+                console.log(grupo.nombre + " , " + listaAsistencia.grupo);
+                if (grupo.nombre == listaAsistencia.grupo) { 
+                    if (err) return handleError(err);
 
-            var doc = new listaAsistenciaModel(listaAsistencia);
+                    listaAsistencia.grupo = grupo._id;
 
-            doc.save(function (err, doc) {
-                if (err) return console.error(err);
-                console.log("Documento insertado.");
-            });
+                    var doc = new listaAsistenciaModel(listaAsistencia);
+
+                    doc.save(function (err, doc) {
+                        if (err) return console.error(err);
+                        console.log("Documento insertado.");
+                    });
+                    
+                    encontrado = true;
+                    resCallback(); //se encontro
+                    break;
+                }
+            }
+
+            if(!encontrado)
+                resCallback(1); //no se encontro ningun grupo
         });
     })
 }
 
+module.exports.obtenerAsistenciasCallback = obtenerAsistenciasCallback;
 module.exports.registrarAsistencia = registrarAsistencia;
 module.exports.obtenerCurso = obtenerCurso;
 module.exports.obtenerGrupo = obtenerGrupo;

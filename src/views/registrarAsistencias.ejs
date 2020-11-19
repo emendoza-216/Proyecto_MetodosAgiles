@@ -54,15 +54,36 @@
             
                 <br>
                 <div id="selectfiles">
-                    <form action="/asistencias" enctype="multipart/form-data" method="POST">
-                        <label for="myfile">Selecciona la lista de asistencia:</label>
-                        <input type="file" id="archivo" name="archivo" value="Seleccionar archivo" onchange="validarArchivoSeleccionado(this.value);"/>
-                        <br><br>
-                        <input type="submit" id="subir" value="Subir Archivo" disabled />
-                    </form>
+                    <% if(archivoSubido[0] == null) { %>
+                        <form action="/asistencias" enctype="multipart/form-data" method="POST">
+                            <label for="myfile">Selecciona la lista de asistencia:</label>
+                            <input type="file" id="archivo" name="archivo" value="<%=archivoSubido[0] %>" onchange="validarArchivoSeleccionado(this.value);"/>
+                        
+                            <br><br>
+                            <input type="submit" id="subir" value="Subir Archivo" disabled />
+                        </form>
+                    <% } else { %>
+                        <b>Archivo: <%=archivoSubido[0] %></b>
+                        <form action="/asistencias" method="POST">
+                            <label for="">Grupo</label>
+                            <select id="grupo" name="grupo">
+                                <% listaGrupos.forEach(function(gru){ %>
+                                <option value="<%= gru.nombre %>">
+                                    <%= gru.nombre %>
+                                </option>
+                                <% }); %>
+                            </select>
+                            
+                            <input type="text" id="dirArchivo" name="dirArchivo" value="<%=archivoSubido[0] %>" hidden/>
+
+                            <br><br>
+                            <input type="submit" id="subir" value="Subir Archivo" />
+                        </form>
+                    <% } %>
                 </div>
             </div>
             <div>
+                <h3>Tabla de prueba:</h3>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <th>Curso</th>
@@ -80,10 +101,6 @@
                             <td> <%=listaAsistencia[i].fecha %> </td>
                             <td> <%=listaAsistencia[i].unidad %> </td>
                             <td> <%=listaAsistencia[i].asistencias %> </td>
-                            <td>
-                                <a href="" class="btn btn-success">Aprobar</a>
-                                <a href="" class="btn btn-danger">Eliminar</a>
-                            </td>
                         </tr>
                         <% } %>
                     </tbody>
@@ -107,7 +124,6 @@
                 return false; // No válido.
             }
         </script>
-
     </body>
 
 </html>

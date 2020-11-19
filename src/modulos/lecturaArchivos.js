@@ -12,7 +12,7 @@ function interpretarCsv(contenido) {
         fecha = arrayEncabezado[2];
     }
 
-    var regAlumnos = new RegExp('\n(.+)✔.+', 'g');
+    var regAlumnos = new RegExp('\n(.+)[\?|✔].+', 'g');
     var array; 
     while(array = regAlumnos.exec(contenido)){
         var nombreAlumno = array[1].trim();
@@ -21,6 +21,7 @@ function interpretarCsv(contenido) {
 
     var listaObj = {
         "curso" : curso.trim(), 
+        "grupo" : null,
         "unidad" : 1,
         "fecha" : fecha.trim(),
         "asistencias" : asistencias
@@ -53,7 +54,7 @@ function leerArchivo(dir, callback) {
 }
 
 function prueba() {
-    leerArchivo('../ejemplosInput/Ágiles (2020-09-10).csv');
+    leerArchivo('../ejemplosInput/Ágiles (2020-08-25).csv');
 }
 
 module.exports.leerArchivo = leerArchivo;

@@ -100,13 +100,14 @@
                     alert('El campo es válido');
                 }
             }
+
         </script>
 
         <h1>Crear curso</h1>
         <form id="cursoForma" name="cursoForma" action="/cursos" onsubmit="return verificar()" method="POST">
             <label forHTML="curso">Introduzca nombre de curso:</label>
             <br>
-            <input type="text" id="curso" name="curso" onkeyup="validar()" onblur="validar()" />
+            <input type="text" id="curso" name="curso" value="<%=prellenado%>" onkeyup="validar()" onblur="validar()" />
             <div id="mensaje" style="position: absolute;" hidden>
                 Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres. Evite espacios al inicio o final del nombre.
             </div>
@@ -118,6 +119,9 @@
         <% } %>
         <% if(res == 1){ %>
         <script>alert("Un curso con este nombre ya existe.");</script>
+        <% } %>
+        <% if(res == 2){ %>
+        <script>alert("Existe curso todavia no existe. Primero debe crearlo en esta pantalla.");</script>
         <% } %>
     </section>
 </body>
