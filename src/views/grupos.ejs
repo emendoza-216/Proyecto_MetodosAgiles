@@ -22,7 +22,7 @@
             // Tamaño máximo para el input.
             const limite = 50;
             // El regex que vamos a comprobar.
-            const regex = new RegExp('^[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
+            const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
 
             // Primera validación: si input esta vacio entonces no es válido.
             if (!input.value) {
