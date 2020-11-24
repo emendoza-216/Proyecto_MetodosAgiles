@@ -16,18 +16,19 @@ const { render } = require('ejs');
 router.post('/asistencias', async(req, res, next) => {
     var grupo = req.body.grupo;
     var dirArchivo = req.body.dirArchivo;
+    var curso;
 
     var fstream;
     req.pipe(req.busboy);
-    /*
+    
     req.busboy.on('field', function(fieldname, val){
-        if (fieldname == 'grupo'){
-            grupo = val;
+        if (fieldname == 'curso'){
+            curso = val;
         }
-    });*/
+    });
     function ejecutar(direccion, filename){
         lecturaArchivos.leerArchivo(direccion, async(listaObj) => { 
-            const curso = listaObj.curso;
+            //const curso = listaObj.curso;
             const existe = await conexion.obtenerCurso(curso);
             if(existe[0] == null){
                 res.render('cursos', { res: 2, prellenado: curso });
@@ -87,10 +88,11 @@ router.post('/asistencias', async(req, res, next) => {
 
 router.get('/asistencias',  async(req, res) => {
     //mostrar tabla
+    const cursos = await cursoModel.find();
     conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
         console.log(listaAsistencia);
         const listaGrupos = [];
-        res.render('RegistrarAsistencias', { listaAsistencia, listaGrupos, archivoSubido: []});
+        res.render('RegistrarAsistencias', { listaAsistencia, cursos, listaGrupos, archivoSubido: []});
     });
 });
 
@@ -101,7 +103,7 @@ router.get('/cursos', async (req, res) => {
 router.post('/cursos', async (req, res, next) => {
     const curso = req.body.curso;
     const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
-    if (typeof (curso) == "undefined" || curso.length > 50 || !regex.test(curso)) { // No es válido.
+    if (typeof (curso) == "undefined" || curso.length > 60 || !regex.test(curso)) { // No es válido.
         res.render('cursos', { res: null, prellenado: null });
     } else {
         const existe = await conexion.obtenerCurso(curso);

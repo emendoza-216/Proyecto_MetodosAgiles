@@ -58,7 +58,16 @@
                         <form action="/asistencias" enctype="multipart/form-data" method="POST">
                             <label for="myfile">Selecciona la lista de asistencia:</label>
                             <input type="file" id="archivo" name="archivo" value="<%=archivoSubido[0] %>" onchange="validarArchivoSeleccionado(this.value);"/>
-                        
+                           
+                            <label for="">Curso</label>
+                            <select id="curso" name="curso">
+                                <% cursos.forEach(function(cur){ %>
+                                <option value="<%= cur.nombre %>">
+                                    <%= cur.nombre %>
+                                </option>
+                                <% }); %>
+                            </select>
+                            
                             <br><br>
                             <input type="submit" id="subir" value="Subir Archivo" disabled />
                         </form>
@@ -109,17 +118,17 @@
         </section>
         <!-- Aquí comienzan los scripts -->
         <script>
-            // Función que valida tanto la extensión del archivo así como si se elegió uno.
+            // Función que valida si se eligio un archivo. ~Función que valida tanto la extensión del archivo así como si se elegió uno.~
             function validarArchivoSeleccionado(nombreArchivo) {
-                var extension_permitida = "csv";
-                var extension_archivo = nombreArchivo.split('.').pop(); // Explicación -> https://www.geeksforgeeks.org/how-to-get-file-extensions-using-javascript/#:~:text=Using%20split()%20and%20pop()%20method%3A&text=The%20first%20part%20will%20be,extension%20of%20the%20file%20selected.
+                //var extension_permitida = "csv";
+                //var extension_archivo = nombreArchivo.split('.').pop(); // Explicación -> https://www.geeksforgeeks.org/how-to-get-file-extensions-using-javascript/#:~:text=Using%20split()%20and%20pop()%20method%3A&text=The%20first%20part%20will%20be,extension%20of%20the%20file%20selected.
                 var bt = document.getElementById('subir');
 
-                if (extension_permitida == extension_archivo) {
+                if (true){ //extension_permitida == extension_archivo) {
                     bt.disabled = false;
                     return true; // Válido.
                 }
-                alert("Archivo inválido. Seleccione un archivo .csv");
+                //alert("Archivo inválido. Seleccione un archivo .csv");
                 bt.disabled = true;
                 return false; // No válido.
             }

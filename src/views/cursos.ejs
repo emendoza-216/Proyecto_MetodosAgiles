@@ -54,7 +54,7 @@
                 const mensaje = document.getElementById('mensaje');
                 input.willValidate = false;
                 // Tamaño máximo para el input.
-                const limite = 50;
+                const limite = 60;
                 // El regex que vamos a comprobar.
                 const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i'); // Gracias usuario de stackoverflow <3 -> https://es.stackoverflow.com/questions/81041/expresion-regular-para-validar-letras-con-acentos-y-%C3%B1
 
@@ -109,7 +109,7 @@
             <br>
             <input type="text" id="curso" name="curso" value="<%=prellenado%>" onkeyup="validar()" onblur="validar()" />
             <div id="mensaje" style="position: absolute;" hidden>
-                Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres. Evite espacios al inicio o final del nombre.
+                Introduzca solo letras (A-Z) o (a-z). Máximo 60 caracteres. Evite espacios al inicio o final del nombre.
             </div>
             <input type="submit" value="Crear curso" />
         </form>
