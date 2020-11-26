@@ -22,6 +22,18 @@ function Modelo(props) {
   );
 }
 
+function Dropbox() {
+  return (
+    <div>
+      <section id="dropbox">
+        <label>ARRASTRA AQUÍ LAS LISTAS DE ASISTENCIA</label>
+        <br/>
+      </section>
+      <button id="uploadButton">Subir Archivos</button>
+    </div>
+  );
+}
+
 var modelos = (
   <div>
     <Modelo id="curso" name="Curso" />
@@ -31,3 +43,4 @@ var modelos = (
 );
 
 ReactDOM.render(modelos, document.querySelector('#modelos'));
+ReactDOM.render(<Dropbox/>, document.querySelector('#dropdiv'));
