@@ -18,7 +18,7 @@ class fileHandler{
 			let data = new FormData();
 			for (let file of this.fileList) 
 				data.append('files[]', file, file.name);
-			fetch('https://example.com/api/upload', {
+			fetch('/asistencias', {
 				method: 'POST', body: data,
 			}).then(function(res) {
 				console.log('Status', res);

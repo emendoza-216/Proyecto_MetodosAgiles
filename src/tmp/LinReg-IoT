@@ -1,0 +1,15 @@
+¿Existe una relación entre la humedad y la temperatura?
+	Sí existe una relación aparente entre temperatura y humedad aunque esta puede variar dependiendo de la cantidad de la muestra de los datos.
+¿Qué pasa entre la humedad y la temperatura aparente?
+	Se encuentran relacionadas siendo la temperatura la variable independiente y la humedad la dependiente.
+¿Se puedes predecir la temperatura aparente dada la humedad? Si es así predecir 20 lecturas de temperatura.
+	Sí se puede predecir pero no lapsos muy largos ya que la temperatura varía dependiendo de la temporada.
+
+	Con una muestra del 1 - 5 de febrero del 2011 de 6:00 AM a 10:00 AM. Y una presición de los datos del 65.25% se obtienen: 
+	{
+		[4, 0.88], [8, 0.81], [5, 0.86], [5, 0.86], 
+		[4, 0.88], [3, 0.89], [1, 0.93], [6, 0.85], 
+		[5, 0.86], [9, 0.80], [0, 0.94], [8, 0.81], 
+		[7, 0.83], [2, 0.91], [1, 0.93], [9, 0.80], 
+		[1, 0.93], [8, 0.81], [7, 0.83], [2, 0.91], 
+	}

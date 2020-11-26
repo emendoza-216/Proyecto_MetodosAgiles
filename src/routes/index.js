@@ -114,7 +114,7 @@ router.get('/asistencias',  async(req, res) => {
     const cursos = await cursoModel.find();
     conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
         //console.log(listaAsistencia);
-        res.render('RegistrarAsistencias', { listaAsistencia, cursos, listaGrupos: [], archivoSubido: []});
+        res.render('principal', { listaAsistencia, cursos, listaGrupos: [], archivoSubido: []});
     });
 });
 
