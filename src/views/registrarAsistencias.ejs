@@ -55,10 +55,14 @@
                 <br>
                 <div id="selectfiles">
                     <% if(archivoSubido[0] == null) { %>
+                        <b>Listas de asistencia:</b>
+                        <button class="add_form_field">
+                            Añadir archivo
+                        </button>
                         <form action="/asistencias" enctype="multipart/form-data" method="POST">
-                            <label for="myfile">Selecciona la lista de asistencia:</label>
-                            <input type="file" id="archivo" name="archivo" value="<%=archivoSubido[0] %>" onchange="validarArchivoSeleccionado(this.value);"/>
-                           
+                            <!--<input type="file" id="archivo" name="archivo" value="<%=archivoSubido[0] %>" onchange="validarArchivoSeleccionado(this.value);"/>-->
+                            <div class="container1"></div>
+
                             <label for="">Curso</label>
                             <select id="curso" name="curso">
                                 <% cursos.forEach(function(cur){ %>
@@ -68,11 +72,20 @@
                                 <% }); %>
                             </select>
                             
+                            <input type="text" id="archivosRecibidos" name="archivosRecibidos" class="contador" value="0" hidden/>
+
                             <br><br>
-                            <input type="submit" id="subir" value="Subir Archivo" disabled />
+                            <input type="submit" id="subir" value="Subir Archivo(s)" />
                         </form>
                     <% } else { %>
-                        <b>Archivo: <%=archivoSubido[0] %></b>
+                        <b>Archivo(s):</br>
+                            <% archivoSubido.forEach(function(ar){ %>
+                            <span>
+                                <%= ar %>
+                            </span>
+                            </br>
+                            <% }); %>
+                        </b>
                         <form action="/asistencias" method="POST">
                             <label for="">Grupo</label>
                             <select id="grupo" name="grupo">
@@ -83,7 +96,7 @@
                                 <% }); %>
                             </select>
                             
-                            <input type="text" id="dirArchivo" name="dirArchivo" value="<%=archivoSubido[0] %>" hidden/>
+                            <input type="text" id="dirArchivo" name="dirArchivo" value="<%=archivoSubido %>" hidden/>
 
                             <br><br>
                             <input type="submit" id="subir" value="Subir Archivo" />
@@ -117,6 +130,29 @@
             </div>
         </section>
         <!-- Aquí comienzan los scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                var x = 0;
+                var wrapper = $(".container1");
+                var add_button = $(".add_form_field");
+                var contador = $(".contador");
+
+                $(add_button).click(function(e) {
+                    e.preventDefault();
+                    $(wrapper).append('<div><input type="file" name="archivo" id="archivo" value=""/><a href="#" class="delete">Borrar</a><br></div>'); 
+                    x++;
+                    contador.val(x);
+                });
+
+                $(wrapper).on("click", ".delete", function(e) {
+                    e.preventDefault();
+                    $(this).parent('div').remove();
+                    x--;
+                    contador.val(x);
+                })
+            });
+        </script>
         <script>
             // Función que valida si se eligio un archivo. ~Función que valida tanto la extensión del archivo así como si se elegió uno.~
             function validarArchivoSeleccionado(nombreArchivo) {

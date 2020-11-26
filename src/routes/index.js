@@ -17,6 +17,7 @@ router.post('/asistencias', async(req, res, next) => {
     var grupo = req.body.grupo;
     var dirArchivo = req.body.dirArchivo;
     var curso;
+    var archivosRecibidos = 0;
 
     var fstream;
     req.pipe(req.busboy);
@@ -25,7 +26,20 @@ router.post('/asistencias', async(req, res, next) => {
         if (fieldname == 'curso'){
             curso = val;
         }
+        if (fieldname == 'archivosRecibidos'){
+            archivosRecibidos = val;
+            console.log("Recibiendo: " + val);
+        }
     });
+
+    var archivoSubido = [];
+    var listaGrupos = [];
+    function mostrarSiguiente(){
+        conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
+            res.render('RegistrarAsistencias', { listaAsistencia, listaGrupos, archivoSubido });
+        });
+    }
+
     function ejecutar(direccion, filename){
         lecturaArchivos.leerArchivo(direccion, async(listaObj) => { 
             //const curso = listaObj.curso;
@@ -34,55 +48,64 @@ router.post('/asistencias', async(req, res, next) => {
                 res.render('cursos', { res: 2, prellenado: curso });
             }
             else {
-                console.log("grupo: " + grupo);
                 if (typeof(grupo) == "undefined"){
                     console.log("grupo no definido todavia");
-                    const grupos = await grupoModel.find();
-                    const listaGrupos = [];
-                    for (let index = 0; index < grupos.length; index++) {
-                        const grupo = grupos[index];
-                        if(grupo.curso.equals(existe[0]._id)){
-                            listaGrupos.push(grupo);
+                    
+                    if(listaGrupos[0] == null) {
+                        const grupos = await grupoModel.find();
+                        for (let index = 0; index < grupos.length; index++) {
+                            const grupo = grupos[index];
+                            if(grupo.curso.equals(existe[0]._id)){
+                                listaGrupos.push(grupo);
+                            }
                         }
                     }
-
+                    
                     if(listaGrupos[0] == null){
                         const cursos = await cursoModel.find();
                         res.render('grupos',{ res: 2, cursos });
                     }
                     else {
-                        const archivoSubido = [filename];
-                        conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
-                            res.render('RegistrarAsistencias', { listaAsistencia, listaGrupos, archivoSubido });
-                        });
+                        console.log("archivo push");
+                        archivoSubido.push(filename);
+                        //mostrarSiguiente();
                     }
                 }
                 else {
                     console.log("si hay grupo");
                     listaObj.grupo = grupo;
                     conexion.registrarAsistencia(listaObj, async(err)=>{
-                        res.redirect('back');
+                        console.log("Registrada.")
                     });
                 }
             }
         });
     }
 
+    var up = 0;
     req.busboy.on('file', function (fieldname, file, filename) {
-        console.log(file);
         console.log("Uploading: " + filename);
-        
         var direccion = 'tmp/' + filename;
         fstream = fs.createWriteStream(direccion);
         file.pipe(fstream);
         fstream.on('close', function() {
             ejecutar(direccion, filename);
+            up++;
+            if(up == archivosRecibidos)
+                mostrarSiguiente();
         });
     });
     
     if(typeof(dirArchivo) != "undefined"){
-        var direccion = 'tmp/'+dirArchivo;
-        ejecutar(direccion, dirArchivo);
+        var archivosArr = dirArchivo.split(",");
+
+        for (let index = 0; index < archivosArr.length; index++) {
+            const nom = archivosArr[index];
+            const direccion = 'tmp/'+nom;
+            ejecutar(direccion, nom);
+        }
+        
+        res.redirect('back');
     }
 });
 
@@ -90,9 +113,8 @@ router.get('/asistencias',  async(req, res) => {
     //mostrar tabla
     const cursos = await cursoModel.find();
     conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
-        console.log(listaAsistencia);
-        const listaGrupos = [];
-        res.render('RegistrarAsistencias', { listaAsistencia, cursos, listaGrupos, archivoSubido: []});
+        //console.log(listaAsistencia);
+        res.render('RegistrarAsistencias', { listaAsistencia, cursos, listaGrupos: [], archivoSubido: []});
     });
 });
 
