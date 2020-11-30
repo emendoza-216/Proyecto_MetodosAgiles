@@ -118,6 +118,26 @@ router.get('/asistencias',  async(req, res) => {
     });
 });
 
+router.get('/obtenerAsistencias/:modo&:filtro',  async(req, res) => {  
+    var modo = req.params.modo;
+    var filtro = req.params.filtro;
+
+    if(modo == 'curso'){ //filtrar por curso
+        conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
+            var lista = [];
+
+            for (let index = 0; index < listaAsistencia.length; index++) {
+                const l = listaAsistencia[index];
+                if(l.grupo.curso.nombre == filtro){
+                    lista.push(l);
+                }
+            }
+
+            res.json({lista}); 
+        });
+    }
+});
+
 router.get('/cursos', async (req, res) => {
     res.render('cursos', { res: null, prellenado: null });
 });
