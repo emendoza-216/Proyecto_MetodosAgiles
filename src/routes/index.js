@@ -13,7 +13,7 @@ const grupoModel = require('../models/grupo');
 const cursoModel = require('../models/curso');
 const { render } = require('ejs');
 
-router.post('/asistencias', async(req, res, next) => {
+router.post('/asistencias', async (req, res, next) => {
     var grupo = req.body.grupo;
     var dirArchivo = req.body.dirArchivo;
     var curso;
@@ -21,12 +21,12 @@ router.post('/asistencias', async(req, res, next) => {
 
     var fstream;
     req.pipe(req.busboy);
-    
-    req.busboy.on('field', function(fieldname, val){
-        if (fieldname == 'curso'){
+
+    req.busboy.on('field', function (fieldname, val) {
+        if (fieldname == 'curso') {
             curso = val;
         }
-        if (fieldname == 'archivosRecibidos'){
+        if (fieldname == 'archivosRecibidos') {
             archivosRecibidos = val;
             console.log("Recibiendo: " + val);
         }
@@ -34,36 +34,36 @@ router.post('/asistencias', async(req, res, next) => {
 
     var archivoSubido = [];
     var listaGrupos = [];
-    function mostrarSiguiente(){
-        conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
+    function mostrarSiguiente() {
+        conexion.obtenerAsistenciasCallback((listaAsistencia) => {
             res.render('RegistrarAsistencias', { listaAsistencia, listaGrupos, archivoSubido });
         });
     }
 
-    function ejecutar(direccion, filename){
-        lecturaArchivos.leerArchivo(direccion, async(listaObj) => { 
+    function ejecutar(direccion, filename) {
+        lecturaArchivos.leerArchivo(direccion, async (listaObj) => {
             //const curso = listaObj.curso;
             const existe = await conexion.obtenerCurso(curso);
-            if(existe[0] == null){
+            if (existe[0] == null) {
                 res.render('cursos', { res: 2, prellenado: curso });
             }
             else {
-                if (typeof(grupo) == "undefined"){
+                if (typeof (grupo) == "undefined") {
                     console.log("grupo no definido todavia");
-                    
-                    if(listaGrupos[0] == null) {
+
+                    if (listaGrupos[0] == null) {
                         const grupos = await grupoModel.find();
                         for (let index = 0; index < grupos.length; index++) {
                             const grupo = grupos[index];
-                            if(grupo.curso.equals(existe[0]._id)){
+                            if (grupo.curso.equals(existe[0]._id)) {
                                 listaGrupos.push(grupo);
                             }
                         }
                     }
-                    
-                    if(listaGrupos[0] == null){
+
+                    if (listaGrupos[0] == null) {
                         const cursos = await cursoModel.find();
-                        res.render('grupos',{ res: 2, cursos });
+                        res.render('grupos', { res: 2, cursos });
                     }
                     else {
                         console.log("archivo push");
@@ -74,7 +74,7 @@ router.post('/asistencias', async(req, res, next) => {
                 else {
                     console.log("si hay grupo");
                     listaObj.grupo = grupo;
-                    conexion.registrarAsistencia(listaObj, async(err)=>{
+                    conexion.registrarAsistencia(listaObj, async (err) => {
                         console.log("Registrada.")
                     });
                 }
@@ -88,52 +88,59 @@ router.post('/asistencias', async(req, res, next) => {
         var direccion = 'tmp/' + filename;
         fstream = fs.createWriteStream(direccion);
         file.pipe(fstream);
-        fstream.on('close', function() {
+        fstream.on('close', function () {
             ejecutar(direccion, filename);
             up++;
-            if(up == archivosRecibidos)
+            if (up == archivosRecibidos)
                 mostrarSiguiente();
         });
     });
-    
-    if(typeof(dirArchivo) != "undefined"){
+
+    if (typeof (dirArchivo) != "undefined") {
         var archivosArr = dirArchivo.split(",");
 
         for (let index = 0; index < archivosArr.length; index++) {
             const nom = archivosArr[index];
-            const direccion = 'tmp/'+nom;
+            const direccion = 'tmp/' + nom;
             ejecutar(direccion, nom);
         }
-        
+
         res.redirect('back');
     }
 });
 
-router.get('/asistencias',  async(req, res) => {
+router.get('/asistencias', async (req, res) => {
     //mostrar tabla
     const cursos = await cursoModel.find();
-    conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
+    conexion.obtenerAsistenciasCallback((listaAsistencia) => {
         //console.log(listaAsistencia);
-        res.render('principal', { listaAsistencia, cursos, listaGrupos: [], archivoSubido: []});
+        res.render('principal', { listaAsistencia, cursos, listaGrupos: [], archivoSubido: [] });
     });
 });
 
-router.get('/obtenerAsistencias/:modo&:filtro',  async(req, res) => {  
+router.get('/obtenerAsistencias/:modo&:filtro', async (req, res) => {
     var modo = req.params.modo;
     var filtro = req.params.filtro;
 
-    if(modo == 'curso'){ //filtrar por curso
-        conexion.obtenerAsistenciasCallback((listaAsistencia)=>{
+    if (modo == null || modo == "undefined") { // Si el parámetro "modo" enviado es nulo o indefinido.
+        console.log("modo nulo");
+        res.json({ lista: [] });
+    }
+    if (modo == 'curso') { // Filtrar por curso.
+        conexion.obtenerAsistenciasCallback((listaAsistencia) => {
             var lista = [];
 
+            if (filtro == null || filtro == "undefined") { // Si el parámetro "filtro" enviado es nulo o indefinido.
+                console.log("filtro nulo");
+                res.json({ lista: [] });
+            }
             for (let index = 0; index < listaAsistencia.length; index++) {
                 const l = listaAsistencia[index];
-                if(l.grupo.curso.nombre == filtro){
+                if (l.grupo.curso.nombre == filtro) {
                     lista.push(l);
                 }
             }
-
-            res.json({lista}); 
+            res.json({ lista });
         });
     }
 });
@@ -149,8 +156,8 @@ router.post('/cursos', async (req, res, next) => {
         res.render('cursos', { res: null, prellenado: null });
     } else {
         const existe = await conexion.obtenerCurso(curso);
-        if(existe[0] == null){
-            console.log("no esta repetido se crea [0]")
+        if (existe[0] == null) {
+            console.log("no esta repetido se crea [0]");
             conexion.crearCurso(curso);
             res.render('cursos', { res: 0, prellenado: null });
         }
@@ -173,7 +180,7 @@ router.post('/cursos', async (req, res, next) => {
 
 router.get('/grupos', async (req, res) => {
     const cursos = await cursoModel.find();
-    res.render('grupos',{ res: null, cursos });
+    res.render('grupos', { res: null, cursos });
 });
 
 router.post('/grupos', async (req, res, next) => {
@@ -183,26 +190,26 @@ router.post('/grupos', async (req, res, next) => {
     const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
 
     if (typeof (grupo) == "undefined" || typeof (curso) == "undefined" || grupo.length > 50 || !regex.test(grupo)) { // No es válido.
-        res.render('grupos', {cursos, res: null });
+        res.render('grupos', { cursos, res: null });
     } else {
         const existe = await conexion.obtenerGrupo(grupo);
-        if(existe[0] == null){
+        if (existe[0] == null) {
             console.log("no esta repetido se crea")
             await conexion.crearGrupo(grupo, curso);
-            res.render('grupos', {cursos, res: 0 });
+            res.render('grupos', { cursos, res: 0 });
         }
 
         for (let index = 0; index < existe.length; index++) {
             const element = existe[index];
             if (grupo.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
                 console.log("esta repetido")
-                res.status(401).render('grupos', {cursos, res: 1 });
+                res.status(401).render('grupos', { cursos, res: 1 });
                 break;
             }
             if (index + 1 == existe.length) { // No existe.
                 console.log("no esta repetido se crea")
                 await conexion.crearGrupo(grupo, curso);
-                res.render('grupos', {cursos, res: 0 });
+                res.render('grupos', { cursos, res: 0 });
             }
         }
     }
