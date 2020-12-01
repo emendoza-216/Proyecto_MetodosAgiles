@@ -14,9 +14,9 @@ const cursoModel = require('../models/curso');
 const { render } = require('ejs');
 
 router.post('/asistencias', async (req, res, next) => {
-    var grupo = req.body.grupo;
+    var grupo = await conexion.obtenerGrupo(grupo);
     var dirArchivo = req.body.dirArchivo;
-    var curso;
+    var curso = await conexion.obtenerCurso(curso);
     var archivosRecibidos = 0;
 
     var fstream;

@@ -72,7 +72,7 @@ async function obtenerAsistenciasCallback(callback) {
 
 function registrarAsistencia(listaAsistencia, resCallback) {
     cursoModel.findOne({ "nombre": listaAsistencia.curso }, '_id', function (err, curso) {
-        grupoModel.find({"curso": curso._id }, null, function (err, grupos) {
+        grupoModel.find({"curso": listaAsistencia.curso._id }, null, function (err, grupos) {
             var encontrado = false;
 
             for (let index = 0; index < grupos.length; index++) {
