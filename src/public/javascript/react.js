@@ -1,4 +1,6 @@
 function Modelo(props) {
+  const txtField = "txtField" + props.name;
+  const txtPlaceholder = "(Nombre de " + props.name + ")";
   const btnAgregar = "btnAgregar" + props.name;
   const btnModificar = "btnModificar" + props.name;
   const btnBorrar = "btnBorrar" + props.name;
@@ -9,13 +11,14 @@ function Modelo(props) {
 
   return (
     <div className="modelo">
+      <b>{props.name}</b>
       <form id={formId}>
-        <select id={selectId}>
-          <option>{props.name}</option>
-        </select>
+        <select id={selectId}></select>
+        <button id={btnBorrar} type="button">Eliminar</button>
+        <br/>
+        <input type="text" id={txtField} name={txtField} placeholder={txtPlaceholder}/>
         <button id={btnAgregar} type="button">Agregar</button>
         <button id={btnModificar} type="button">Modificar</button>
-        <button id={btnBorrar} type="button">Eliminar</button>
       </form>
       <label id={error} className="Error"></label>
     </div>

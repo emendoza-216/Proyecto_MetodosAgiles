@@ -16,10 +16,20 @@ body {
 	padding: 25px;
 }
 
+.modelo b {
+	color: var(--white);
+}
+
 .modelo select {
 	width: 300px;
 	height: 40px;
 	text-align: center;
+}
+
+.modelo input {
+	width: 292px;
+	height: 35px;
+	margin-top: 5px;
 }
 
 .modelo button {

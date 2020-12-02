@@ -145,8 +145,14 @@ router.get('/obtenerAsistencias/:modo&:filtro', async (req, res) => {
     }
 });
 
+/*
 router.get('/cursos', async (req, res) => {
     res.render('cursos', { res: null, prellenado: null });
+});
+*/
+router.get('/cursos', async (req, res) => {
+    const cursos = await cursoModel.find();
+    res.json(cursos);
 });
 
 router.post('/cursos', async (req, res, next) => {
@@ -177,10 +183,15 @@ router.post('/cursos', async (req, res, next) => {
         }
     }
 });
-
+/*
 router.get('/grupos', async (req, res) => {
     const cursos = await cursoModel.find();
     res.render('grupos', { res: null, cursos });
+});
+*/
+router.get('/grupos', async (req, res) => {
+    const grupos = await grupoModel.find();
+    res.json(grupos);
 });
 
 router.post('/grupos', async (req, res, next) => {
@@ -213,6 +224,10 @@ router.post('/grupos', async (req, res, next) => {
             }
         }
     }
+});
+
+router.get('/unidades', async (req, res) => {
+    res.json([]);
 });
 
 module.exports = router;

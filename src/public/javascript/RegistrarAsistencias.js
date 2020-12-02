@@ -23,8 +23,8 @@ function dropHandler(event) {
           if (event.dataTransfer.items[i].kind === 'file') {   
               var file = event.dataTransfer.items[i].getAsFile();
               var fileExtension = file.name.split('.').pop();
-              var aceptedExtension = "csv";
-              if (aceptedExtension === fileExtension) {     
+              //El profe dijo que aceptara de cualquier tipo: var aceptedExtension = "csv";
+              if (true) { //aceptedExtension === fileExtension) {     
                   //do something
                   console.log('... file[' + i + '].name = ' + file.name);
               } else {
