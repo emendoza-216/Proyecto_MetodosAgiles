@@ -3,6 +3,7 @@ class fileHandler{
 		this.fileList = [];
 		this.dropZone = dropZone;
 		this.button = button;
+		this.subido = false;
 		button.onclick = () => this.uploadFiles();
 	}
 	addFiles(files) {
@@ -14,7 +15,9 @@ class fileHandler{
 			this.dropZone.appendChild(img);
 		}
 
-		if(this.fileList.length == 1){ //primera vez que se sube un archivo
+		if(this.subido == false){ //primera vez que se sube un archivo
+			this.subido = true;
+			
 			var sel = document.getElementById("cursoDeseado");
 
 			fetch('/cursos', {

@@ -130,34 +130,42 @@ router.post('/asistencias', async (req, res, next) => {
         }
         if (fieldname == 'grupo') {
             grupo = val;
-            console.log("GURPO RECIBIOD.")
         }
         if (fieldname == 'archivosRecibidos') {
             archivosRecibidos = val;
-            console.log("Recibiendo: " + val);
         }
     });
 
-    var listaGrupos = [];
+    var up = 0;
     function ejecutar(direccion, filename) {
         lecturaArchivos.leerArchivo(direccion, async (listaObj) => {
             console.log("Curso: " + curso);
             console.log("Grupo: " + grupo);
 
-            grupo = (await conexion.obtenerGrupo(grupo))[0];
+            if(grupo == null || typeof(grupo) == 'undefined' || grupo.length == 0){
+                console.log("nada...");
+                res.json({res: "No hay un grupo seleccionado."});
+            }
+            else {
+                grupo = await conexion.obtenerGrupo(grupo);
 
-            listaObj.curso = curso;
-            listaObj.grupo = grupo;
+                listaObj.curso = curso;
+                listaObj.grupo = grupo;
+    
+                //console.log(listaObj);
+                conexion.registrarAsistencia(listaObj, async (err) => {
+                    console.log("Registrada.");
 
-            //console.log(listaObj);
-            conexion.registrarAsistencia(listaObj, async (err) => {
-                console.log("Registrada.")
-            });
+                    up++;
+                    if (up == archivosRecibidos) { //si se terminaron de subir todos
+                        res.json({res: "Archivos subidos exitosamente."});
+                    }
+                });
+            }
         });
     }
 
     //logica de subida
-    var up = 0;
     req.busboy.on('file', function (fieldname, file, filename) {
         console.log("Uploading: " + filename);
         var direccion = 'tmp/' + filename;
@@ -165,10 +173,6 @@ router.post('/asistencias', async (req, res, next) => {
         file.pipe(fstream);
         fstream.on('close', function () {
             ejecutar(direccion, filename);
-
-            up++;
-            if (up == archivosRecibidos) //si se terminaron de subir todos
-                res.json({res: "Archivos subidos exitosamente."});
         });
     });
 });
@@ -183,7 +187,7 @@ router.get('/asistencias', async (req, res) => {
     });
 });
 */
-router.get('/asistencias/:modo&:filtro', async (req, res) => {
+router.get('/asistencias/:modo/:filtro', async (req, res) => {
     var modo = req.params.modo;
     var filtro = req.params.filtro;
 
@@ -198,6 +202,7 @@ router.get('/asistencias/:modo&:filtro', async (req, res) => {
                 res.json({});
             }
             else {
+                console.log("generando");
                 var lista = [];
                 for (let index = 0; index < listaAsistencia.length; index++) {
                     const l = listaAsistencia[index];
@@ -229,24 +234,26 @@ router.post('/cursos', async (req, res, next) => {
         res.json({res: "No es válido.", prellenado: null });
     } else {
         const existe = await conexion.obtenerCurso(curso);
-        if (existe[0] == null) {
-            console.log("no esta repetido se crea [0]");
-            conexion.crearCurso(curso);
-            res.json({res: "Curso agregado.", prellenado: null });
+        if (existe == null) {
+            const cursos = await cursoModel.find();
+            for (let index = 0; index < cursos.length; index++) {
+                const element = cursos[index];
+                if (curso.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
+                    console.log("esta repetido");
+                    res.json({ res: "Un curso con este nombre ya existe.", prellenado: null });
+                    break;
+                }
+                if (index + 1 == cursos.length) { // No existe.
+                    console.log("no esta repetido se crea");
+                    conexion.crearCurso(curso);
+                    res.json({ res: "Curso agregado.", prellenado: null });
+                    break;
+                }
+            }
         }
-
-        for (let index = 0; index < existe.length; index++) {
-            const element = existe[index];
-            if (curso.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
-                console.log("esta repetido")
-                res.json({ res: "Un curso con este nombre ya existe.", prellenado: null });
-                break;
-            }
-            if (index + 1 == existe.length) { // No existe.
-                console.log("no esta repetido se crea")
-                conexion.crearCurso(curso);
-                res.json({ res: "Curso agregado.", prellenado: null });
-            }
+        else {
+            console.log("esta repetido");
+            res.json({ res: "Un curso con este nombre ya existe.", prellenado: null });
         }
     }
 });
@@ -295,7 +302,7 @@ router.get('/grupos/:curso', async(req, res) => {
     const curso = req.params.curso;
 
     const existe = await conexion.obtenerCurso(curso);
-    if (existe[0] == null) {
+    if (existe == null) {
         res.json({});
     }
     else {
@@ -304,7 +311,8 @@ router.get('/grupos/:curso', async(req, res) => {
         const grupos = await grupoModel.find();
         for (let index = 0; index < grupos.length; index++) {
             const grupo = grupos[index];
-            if (grupo.curso.equals(existe[0]._id)) {
+            console.log(grupo.curso + " - " + existe._id);
+            if (grupo.curso.equals(existe._id)) {
                 listaGrupos.push(grupo);
             }
         }
@@ -322,24 +330,26 @@ router.post('/grupos', async (req, res, next) => {
         res.json({res: "No es válido."});
     } else {
         const existe = await conexion.obtenerGrupo(grupo);
-        if (existe[0] == null) {
-            console.log("no esta repetido se crea")
-            await conexion.crearGrupo(grupo, curso);
-            res.json({res: "Grupo agregado."});
+        if (existe == null) {
+            const grupos = await grupoModel.find();
+            for (let index = 0; index < grupos.length; index++) {
+                const element = grupos[index];
+                if (grupo.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
+                    console.log("esta repetido");
+                    res.json({res: "Un grupo con este nombre ya existe." });
+                    break;
+                }
+                if (index + 1 == grupos.length) { // No existe.
+                    console.log("no esta repetido se crea");
+                    await conexion.crearGrupo(grupo, curso);
+                    res.json({res: "Grupo agregado." });
+                    break;
+                }
+            }
         }
-
-        for (let index = 0; index < existe.length; index++) {
-            const element = existe[index];
-            if (grupo.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
-                console.log("esta repetido")
-                res.json({res: "Un grupo con este nombre ya existe." });
-                break;
-            }
-            if (index + 1 == existe.length) { // No existe.
-                console.log("no esta repetido se crea")
-                await conexion.crearGrupo(grupo, curso);
-                res.json({res: "Grupo agregado." });
-            }
+        else {
+            console.log("esta repetido");
+            res.json({res: "Un grupo con este nombre ya existe." });
         }
     }
 });

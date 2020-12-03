@@ -47,8 +47,21 @@ function Dropbox() {
 function TablaAsistencias() {
   return (
     <div>
-      <h3>Tabla de prueba:</h3>
-      <table id="tablaAsistencias">
+      <h3>Lista de asistencias:</h3>
+      <div>
+        <b>Modo:</b>
+        <select id="modo">
+          <option value="curso">Curso</option>
+          <option value="grupo">Grupo</option>
+          <option value="unidad">Unidad</option>
+        </select>
+        <b> Filtro:</b>
+        <select id="filtro"></select>
+        <br/>
+        <button id="buscar">Buscar</button>
+      </div>
+      <br/>
+      <table className="tabla" id="tablaAsistencias">
           <thead>
             <tr>
               <th>Curso</th>
@@ -58,9 +71,9 @@ function TablaAsistencias() {
               <th>Asistencias</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tablaAsistenciasBody">
               <tr>
-                  <td> </td>
+                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>

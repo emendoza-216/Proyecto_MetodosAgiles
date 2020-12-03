@@ -5,20 +5,71 @@ class optionHandler{
     var btnAgregar = document.getElementById("btnAgregar" + nombre);
     var btnModificar = document.getElementById("btnModificar" + nombre);
     var btnBorrar = document.getElementById("btnBorrar" + nombre);
+
     var selCursos = document.getElementById("selectCursos" + nombre);
 
-    if(nombre == "Grupo"){
-      selCursos.removeAttribute("hidden");
-      this.selCursos = selCursos;
-      this.refrescarOpciones("Curso", selCursos);
+    var selModo = document.getElementById("modo");
+    var selFiltro = document.getElementById("filtro");
+    var btnBuscar = document.getElementById("buscar");
+
+    if(selCursos != null){
+      if(nombre == "Grupo"){
+        selCursos.removeAttribute("hidden");
+        this.selCursos = selCursos;
+        this.refrescarOpciones("Curso", selCursos);
+      }
     }
 
-    this.sel = sel;
-    this.refrescarOpciones(nombre);
+    if(sel != null) {
+      this.sel = sel;
+      this.refrescarOpciones(nombre);
+    }
 
-    btnAgregar.onclick = () => this.agregar(nombre, txtField.value);
-    btnModificar.onclick = () => this.modificar(nombre, sel.value, txtField.value);
-    btnBorrar.onclick = () => this.eliminar(nombre, sel.value);
+    if(btnAgregar != null)
+      btnAgregar.onclick = () => this.agregar(nombre, txtField.value);
+
+    if(btnModificar != null)
+      btnModificar.onclick = () => this.modificar(nombre, sel.value, txtField.value);
+
+    if(btnBorrar != null)
+      btnBorrar.onclick = () => this.eliminar(nombre, sel.value);
+    
+    if(selModo != null && selFiltro != null && btnBuscar != null)  {
+      btnBuscar.onclick = () => this.buscar(selModo.value, selFiltro.value);
+      selModo.onchange = () => this.refrescarOpciones(selModo.options[selModo.selectedIndex].innerHTML, selFiltro);
+      this.refrescarOpciones(selModo.options[selModo.selectedIndex].innerHTML, selFiltro);
+    }
+  }
+  buscar(modo, filtro){
+    console.log(modo, filtro);
+    
+    fetch("/asistencias/"+modo+"/"+filtro, {
+        method: 'GET', 
+      })
+      .then(res => res.json())
+      .then(function(res) {
+        var tbody = document.getElementById("tablaAsistenciasBody");
+        console.log(res);
+        var html = ''; //curso, grupo, fecha, unidad, asistencias
+        for (var key=0, size=res.length; key<size;key++) {
+          html += '<tr><td>'
+                + res[key].grupo.curso.nombre
+                + '</td><td>'
+                + res[key].grupo.nombre
+                + '</td><td>'
+                + res[key].fecha
+                + '</td><td>'
+                + res[key].unidad
+                + '</td><td>'
+                + res[key].asistencias
+                + '</td></tr>';
+        }
+
+        tbody.innerHTML = html;
+      })
+      .catch(function(e) {
+        console.log('Error', e);
+      });
   }
   agregar(opcion, nombre){
     console.log("agregando " + nombre);
@@ -29,6 +80,8 @@ class optionHandler{
     var refrescar = function(){
       obj.refrescarOpciones(opcion);
       obj.refrescarOpciones("Curso", document.getElementById("selectCursosGrupo"));
+      var selModo = document.getElementById("modo");
+      obj.refrescarOpciones(selModo.options[selModo.selectedIndex].innerHTML, document.getElementById("filtro"));
     }
 
     var data = {

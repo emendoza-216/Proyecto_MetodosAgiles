@@ -37,13 +37,27 @@ function crearGrupo(nombreGrupo, nombreCurso) {
 }
 
 async function obtenerGrupo(nombre) {
-    const grupo = await grupoModel.find();
-    return grupo;
+    const grupos = await grupoModel.find();
+    for (let index = 0; index < grupos.length; index++) {
+        const grupo = grupos[index];
+        if (grupo.nombre == nombre) {
+            return grupo;
+        }
+    }
+
+    return null;
 }
 
 async function obtenerCurso(nombre) {
-    const curso = await cursoModel.find();
-    return curso;
+    const cursos = await cursoModel.find();
+    for (let index = 0; index < cursos.length; index++) {
+        const curso = cursos[index];
+        if (curso.nombre == nombre) {
+            return curso;
+        }
+    }
+
+    return null;
 }
 
 function crearCurso(nombre) {

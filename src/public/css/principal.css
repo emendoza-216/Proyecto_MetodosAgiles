@@ -51,6 +51,22 @@ body {
 	border: var(--light_blue) solid 1px;
 }
 
+b {
+	color: var(--white);
+}
+
+h3 {
+	color: var(--white);
+}
+
+.tabla th {
+	color: var(--white);
+}
+
+.tabla td {
+	color: var(--white);
+}
+
 .dragOver {
 	border: 2px solid var(--light_blue);
 }
