@@ -4,7 +4,7 @@ window.onload = () => {
 	let fh = new fileHandler(dropZone, uploadButton);
 	new dragNdropHandler(dropZone, fh);
 
-	new optionHandler(document.getElementById("selectCurso"), "Curso");
-	new optionHandler(document.getElementById("selectGrupo"), "Grupo");
-	new optionHandler(document.getElementById("selectUnidad"), "Unidad");
+	new optionHandler(document, "Curso");
+	new optionHandler(document, "Grupo");
+	new optionHandler(document, "Unidad");
 }
