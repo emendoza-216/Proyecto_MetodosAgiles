@@ -15,6 +15,10 @@ const grupoModel = require('../models/grupo');
 const cursoModel = require('../models/curso');
 const { render } = require('ejs');
 
+router.get('/', async (req, res) => {
+    res.render('principal');
+})
+
 /*
 router.post('/asistencias', async (req, res, next) => {
     var grupo = await conexion.obtenerGrupo(grupo);
@@ -168,6 +172,7 @@ router.post('/asistencias', async (req, res, next) => {
         });
     });
 });
+
 /*
 router.get('/asistencias', async (req, res) => {
     //mostrar tabla
