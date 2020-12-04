@@ -48,24 +48,29 @@ class optionHandler{
       })
       .then(res => res.json())
       .then(function(res) {
-        var tbody = document.getElementById("tablaAsistenciasBody");
-        console.log(res);
-        var html = ''; //curso, grupo, fecha, unidad, asistencias
-        for (var key=0, size=res.length; key<size;key++) {
-          html += '<tr><td>'
-                + res[key].grupo.curso.nombre
-                + '</td><td>'
-                + res[key].grupo.nombre
-                + '</td><td>'
-                + res[key].fecha
-                + '</td><td>'
-                + res[key].unidad
-                + '</td><td>'
-                + res[key].asistencias
-                + '</td></tr>';
+        if(res.res){
+          alert(res.res);
         }
+        else {
+          var tbody = document.getElementById("tablaAsistenciasBody");
+          console.log(res);
+          var html = ''; //curso, grupo, fecha, unidad, asistencias
+          for (var key=0, size=res.length; key<size;key++) {
+            html += '<tr><td>'
+                  + res[key].grupo.curso.nombre
+                  + '</td><td>'
+                  + res[key].grupo.nombre
+                  + '</td><td>'
+                  + res[key].fecha
+                  + '</td><td>'
+                  + res[key].unidad
+                  + '</td><td>'
+                  + res[key].asistencias
+                  + '</td></tr>';
+          }
 
-        tbody.innerHTML = html;
+          tbody.innerHTML = html;
+        }
       })
       .catch(function(e) {
         console.log('Error', e);

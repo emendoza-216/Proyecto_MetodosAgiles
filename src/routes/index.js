@@ -229,7 +229,7 @@ router.get('/asistencias/:modo/:filtro', async (req, res) => {
                     }
                 }
                 if(lista.length == 0){
-                    res.json({res: "No se encontraron asistencias registradas"});//esto deberia mostrar una alerta pero no se
+                    res.json({res: "No se encontraron asistencias registradas."});//esto deberia mostrar una alerta pero no se
                     console.log(lista.length);
                 }else{
                     res.json(lista); 
