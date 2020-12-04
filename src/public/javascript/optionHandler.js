@@ -78,16 +78,9 @@ class optionHandler{
   }
   agregar(opcion, nombre){
     console.log("agregando " + nombre);
-    var source = this.obtenerRuta(opcion);
-    console.log(source);
-    
+
     var obj = this;
-    var refrescar = function(){
-      obj.refrescarOpciones(opcion);
-      obj.refrescarOpciones("Curso", document.getElementById("selectCursosGrupo"));
-      var selModo = document.getElementById("modo");
-      obj.refrescarOpciones(selModo.options[selModo.selectedIndex].innerHTML, document.getElementById("filtro"));
-    }
+    this.actualizarTodo(opcion);
 
     var data = {
       "nombre": nombre,
@@ -96,7 +89,7 @@ class optionHandler{
       data.curso = this.selCursos.value;
     }
 
-    fetch(source, {
+    fetch(this.obtenerRuta(opcion), {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(data),
@@ -107,7 +100,7 @@ class optionHandler{
       if(respuesta.res != null)
         alert(respuesta.res);
 
-      refrescar();
+      obj.actualizarTodo(opcion);
     }).catch(function(e) {
       console.log('Error', e);
       alert("Error: " + e);
@@ -115,9 +108,58 @@ class optionHandler{
   }
   modificar(opcion, nombre, nuevoNombre){
     console.log("modificando " + nombre);
+
+    var obj = this;
+    this.actualizarTodo(opcion);
+
+    var data = {
+      "nombre": nombre,
+      "nuevoNombre": nuevoNombre,
+    };
+
+    fetch(this.obtenerRuta(opcion), {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data),
+    })
+    .then(result => result.json())
+    .then(function(respuesta) {
+      console.log(respuesta);
+      if(respuesta.res != null)
+        alert(respuesta.res);
+
+      obj.actualizarTodo(opcion);
+    }).catch(function(e) {
+      console.log('Error', e);
+      alert("Error: " + e);
+    });
   }
   eliminar(opcion, nombre){
     console.log("eliminando " + nombre);
+
+    var obj = this;
+    this.actualizarTodo(opcion);
+
+    var data = {
+      "nombre": nombre,
+    };
+
+    fetch(this.obtenerRuta(opcion), {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data),
+    })
+    .then(result => result.json())
+    .then(function(respuesta) {
+      console.log(respuesta);
+      if(respuesta.res != null)
+        alert(respuesta.res);
+
+      obj.actualizarTodo(opcion);
+    }).catch(function(e) {
+      console.log('Error', e);
+      alert("Error: " + e);
+    });
   }
   obtenerRuta(nombre){
     var source = null;
@@ -153,5 +195,15 @@ class optionHandler{
       .catch(function(e) {
         console.log('Error', e);
       });
+  }
+  actualizarTodo(opcion){
+    var obj = this;
+    //var refrescar = function(){
+      obj.refrescarOpciones(opcion);
+      obj.refrescarOpciones("Curso", document.getElementById("selectCursosGrupo"));
+      var selModo = document.getElementById("modo");
+      obj.refrescarOpciones(selModo.options[selModo.selectedIndex].innerHTML, document.getElementById("filtro"));
+    //}
+    //refrescar();
   }
 }

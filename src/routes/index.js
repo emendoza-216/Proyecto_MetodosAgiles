@@ -5,6 +5,7 @@ var fs = require('fs');
 var busboy = require('connect-busboy');
 var conexion = require('../modulos/conexion');
 var lecturaArchivos = require('../modulos/lecturaArchivos');
+var validaciones = require('../modulos/validaciones');
 
 router.use(express.json({limit:'1mb'}))
 
@@ -45,7 +46,7 @@ router.post('/asistencias', async (req, res, next) => {
             console.log("Curso: " + curso);
             console.log("Grupo: " + grupo);
 
-            if(grupo == null || typeof(grupo) == 'undefined' || grupo.length == 0){
+            if(!validaciones.validarCadenaVacia(grupo)){
                 console.log("nada...");
                 res.json({res: "No hay un grupo seleccionado."});
             }
@@ -107,13 +108,13 @@ router.get('/asistencias/:modo/:filtro', async (req, res) => {
     var modo = req.params.modo;
     var filtro = req.params.filtro;
 
-    if (modo == null || modo == "undefined") { // Si el parámetro "modo" enviado es nulo o indefinido.
+    if (!validaciones.validarCadenaVacia(modo)) { // Si el parámetro "modo" enviado es nulo o indefinido.
         console.log("modo nulo");
         res.json({});
     }
     if (modo == 'curso') { // Filtrar por curso.
         conexion.obtenerAsistenciasCallback((listaAsistencia) => {
-            if (filtro == null || filtro == "undefined") { // Si el parámetro "filtro" enviado es nulo o indefinido.
+            if (!validaciones.validarCadenaVacia(filtro)) { // Si el parámetro "filtro" enviado es nulo o indefinido.
                 console.log("filtro nulo");
                 res.json({});
             }
@@ -145,19 +146,10 @@ router.get('/cursos', async (req, res) => {
 
 router.post('/cursos', async (req, res, next) => {
     const curso = req.body.nombre;
-    console.log(req.body);
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
-
-    var err = null;
-    if(typeof (curso) == "undefined")
-        err = "Curso no definido.";
-    if(curso.length > 60)
-        err = "El curso debe ser igual o menor a 60 caracteres.";
-    if(!regex.test(curso))
-        err = "Introduzca solo letras (A-Z) o (a-z). Máximo 60 caracteres. Evite espacios al inicio o final del nombre."
-
+   
+    var err = validaciones.validarCurso(curso);
     if (err != null) { // No es válido.
-        res.json({res: err, prellenado: null });
+        res.json({res: err});
     } else {
         const existe = await conexion.obtenerCurso(curso);
         if (existe == null) {
@@ -166,20 +158,71 @@ router.post('/cursos', async (req, res, next) => {
                 const element = cursos[index];
                 if (curso.toUpperCase() == element.nombre.toUpperCase()) { // Ya existe.
                     console.log("esta repetido");
-                    res.json({ res: "Un curso con este nombre ya existe.", prellenado: null });
+                    res.json({ res: "Un curso con este nombre ya existe."});
                     break;
                 }
                 if (index + 1 == cursos.length) { // No existe.
                     console.log("no esta repetido se crea");
                     conexion.crearCurso(curso);
-                    res.json({ res: "Curso agregado.", prellenado: null });
+                    res.json({ res: "Curso agregado."});
                     break;
                 }
             }
         }
         else {
             console.log("esta repetido");
-            res.json({ res: "Un curso con este nombre ya existe.", prellenado: null });
+            res.json({ res: "Un curso con este nombre ya existe."});
+        }
+    }
+});
+
+router.delete('/cursos', async (req, res, next) => {
+    const curso = req.body.nombre;
+   
+    var err = validaciones.validarCurso(curso);
+    if (err != null) { // No es válido.
+        res.json({res: err});
+    } 
+    else {
+        const existe = await conexion.obtenerCurso(curso);
+        if (existe == null) {
+            res.json({ res: "El curso que intenta borrar no existe."});
+        }
+        else {
+            conexion.eliminarCurso(curso, err => {
+                if(err!=null){
+                    res.json({ res: "Ha ocurrido un error desconocido."});
+                }
+                else{
+                    res.json({ res: "Curso eliminado."});
+                }
+            });
+        }
+    }
+});
+
+router.put('/cursos', async (req, res, next) => {
+    const curso = req.body.nombre;
+    const nuevoCurso = req.body.nuevoNombre;
+   
+    var err = validaciones.validarCurso(curso) || validaciones.validarCurso(nuevoCurso);
+    if (err != null) { // No es válido.
+        res.json({res: err});
+    } 
+    else {
+        const existe = await conexion.obtenerCurso(curso);
+        if (existe == null) {
+            res.json({ res: "El curso que intenta modificar no existe."});
+        }
+        else {
+            conexion.modificarCurso(curso, nuevoCurso, (err) => {
+                if(err != null){
+                    res.json({ res: "Ha ocurrido un error desconocido."});
+                }
+                else {
+                    res.json({ res: "Curso modificado."});
+                }
+            });
         }
     }
 });
@@ -215,18 +258,8 @@ router.get('/grupos/:curso', async(req, res) => {
 router.post('/grupos', async (req, res, next) => {
     const grupo = req.body.nombre;
     const curso = req.body.curso;
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
 
-    var err = null;
-    if(typeof (curso) == "undefined")
-        err = "Curso no definido.";
-    if(typeof (grupo) == "undefined")
-        err = "Grupo no definido.";
-    if(grupo.length > 50)
-        err = "El grupo debe ser igual o menor a 50 caracteres.";
-    if(!regex.test(grupo))
-        err = "Introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres. Evite espacios al inicio o final del nombre."
-
+    var err = validaciones.validarGrupo(grupo) || validaciones.validarCurso(curso);
     if (err != null) { // No es válido.
         res.json({res: err});
     } else {

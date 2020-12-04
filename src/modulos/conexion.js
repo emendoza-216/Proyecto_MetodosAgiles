@@ -60,12 +60,50 @@ async function obtenerCurso(nombre) {
     return null;
 }
 
-function crearCurso(nombre) {
+function crearCurso(nombre, callback) {
     var doc = new cursoModel({ "nombre": nombre });
+    if(callback == null){
+        callback = function(){}
+    }
 
     doc.save(function (err, doc) {
-        if (err) return console.error(err);
+        if (err) {
+            callback(err);
+            return console.error(err); 
+        };
         console.log("Curso insertado.");
+        callback();
+    });
+}
+
+function modificarCurso(nombre, nuevoNombre, callback) {
+    var doc = new cursoModel({ "nombre": nombre });
+    if(callback == null){
+        callback = function(){}
+    }
+
+    cursoModel.findOneAndUpdate({"nombre":nombre}, {"nombre":nuevoNombre}, null, function (err, doc) {
+        if (err) {
+            callback(err);
+            return console.error(err); 
+        };
+        console.log("Curso actualizado.");
+        callback();
+    });
+}
+
+function eliminarCurso(nombre, callback) {
+    if(callback == null){
+        callback = function(){}
+    }
+    
+    cursoModel.deleteOne({"nombre": nombre}, function (err, doc) {
+        if (err) {
+            callback(err);
+            return console.error(err); 
+        };
+        console.log("Curso eliminado.");
+        callback();
     });
 }
 
@@ -119,6 +157,8 @@ function registrarAsistencia(listaAsistencia, resCallback) {
 module.exports.obtenerAsistenciasCallback = obtenerAsistenciasCallback;
 module.exports.registrarAsistencia = registrarAsistencia;
 module.exports.obtenerCurso = obtenerCurso;
+module.exports.modificarCurso = modificarCurso;
+module.exports.eliminarCurso = eliminarCurso;
 module.exports.obtenerGrupo = obtenerGrupo;
 module.exports.crearCurso = crearCurso;
 module.exports.crearGrupo = crearGrupo;
