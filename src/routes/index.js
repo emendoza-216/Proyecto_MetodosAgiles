@@ -119,7 +119,7 @@ router.post('/asistencias', async (req, res, next) => {
 router.post('/asistencias', async (req, res, next) => {
     var grupo = req.body.grupo;
     var curso = req.body.curso;
-    var archivosRecibidos = 0;
+    var archivosRecibidos = -1;
 
     var fstream;
     req.pipe(req.busboy);
@@ -166,15 +166,33 @@ router.post('/asistencias', async (req, res, next) => {
     }
 
     //logica de subida
+    var leidos = 0;
+    var archivos = [];
+    function intentarFinalizar(){
+        if(leidos == archivosRecibidos){
+            for (let index = 0; index < archivos.length; index++) {
+                const l = archivos[index];
+                ejecutar(l.direccion, l.filename);
+            }
+        }
+    }
+
     req.busboy.on('file', function (fieldname, file, filename) {
         console.log("Uploading: " + filename);
         var direccion = 'tmp/' + filename;
         fstream = fs.createWriteStream(direccion);
         file.pipe(fstream);
         fstream.on('close', function () {
-            ejecutar(direccion, filename);
+            //ejecutar(direccion, filename);
+            archivos[leidos] = {"direccion":direccion, "filename":filename};
+            leidos++;
+            intentarFinalizar();
         });
     });
+
+    req.busboy.on('finish', function(){
+        intentarFinalizar();
+    })
 });
 
 /*
