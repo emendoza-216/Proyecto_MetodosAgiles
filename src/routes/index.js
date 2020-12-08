@@ -144,7 +144,7 @@ router.get('/cursos', async (req, res) => {
 });
 
 router.post('/cursos', async (req, res, next) => {
-    const curso = req.body.nombre;
+    const curso = req.body.nombre.trim();
 
     var err = validaciones.validarCurso(curso);
     if (err != null) { // No es válido.
@@ -177,7 +177,7 @@ router.post('/cursos', async (req, res, next) => {
 });
 
 router.delete('/cursos', async (req, res, next) => {
-    const curso = req.body.nombre;
+    const curso = req.body.nombre.trim();
 
     var err = validaciones.validarCurso(curso);
     if (err != null) { // No es válido.
@@ -202,8 +202,8 @@ router.delete('/cursos', async (req, res, next) => {
 });
 
 router.put('/cursos', async (req, res, next) => {
-    const curso = req.body.nombre;
-    const nuevoCurso = req.body.nuevoNombre;
+    const curso = req.body.nombre.trim();
+    const nuevoCurso = req.body.nuevoNombre.trim();
 
     var err = validaciones.validarCurso(curso) || validaciones.validarCurso(nuevoCurso);
     if (err != null) { // No es válido.
@@ -266,8 +266,8 @@ router.get('/grupos/:curso', async (req, res) => {
 });
 
 router.post('/grupos', async (req, res, next) => {
-    const grupo = req.body.nombre;
-    const curso = req.body.curso;
+    const grupo = req.body.nombre.trim();
+    const curso = req.body.curso.trim();
 
     var err = validaciones.validarGrupo(grupo) || validaciones.validarCurso(curso);
     if (err != null) { // No es válido.

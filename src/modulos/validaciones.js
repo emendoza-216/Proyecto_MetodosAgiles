@@ -1,5 +1,5 @@
 function validarCurso(curso){
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
+    const regex = new RegExp('^[a-zA-ZÀ-ÿ_\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
 
     var err = null;
     if(typeof (curso) == "undefined")
@@ -13,15 +13,15 @@ function validarCurso(curso){
 }
 
 function validarGrupo(grupo) {
-    const regex = new RegExp('^[a-zA-ZÀ-ÿ _\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
+    const regex = new RegExp('^[a-zA-ZÀ-ÿ_\u00f1\u00d1]+(\s*[0-9a-zA-ZÀ-ÿ _\u00f1\u00d1]*)+$', 'i');
     
     var err = null;
     if(typeof (grupo) == "undefined")
         err = "Grupo no definido.";
-    if(grupo.length > 50)
-        err = "El grupo debe ser igual o menor a 50 caracteres.";
+    if(grupo.length > 60)
+        err = "El grupo debe ser igual o menor a 60 caracteres.";
     if(!regex.test(grupo))
-        err = "Para el grupo introduzca solo letras (A-Z) o (a-z). Máximo 50 caracteres. Evite espacios al inicio o final del nombre.";
+        err = "Para el grupo introduzca solo letras (A-Z) o (a-z). Máximo 60 caracteres. Evite espacios al inicio o final del nombre.";
 
     return err;
 }
