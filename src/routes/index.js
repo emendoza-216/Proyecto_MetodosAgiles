@@ -123,7 +123,7 @@ router.get('/asistencias/:modo/:filtro', async (req, res) => {
                 var lista = [];
                 for (let index = 0; index < listaAsistencia.length; index++) {
                     const l = listaAsistencia[index];
-                    if (l.grupo.curso.nombre == filtro) {
+                    if (l.grupo.curso != null && l.grupo.curso.nombre == filtro) {
                         lista.push(l);
                     }
                 }

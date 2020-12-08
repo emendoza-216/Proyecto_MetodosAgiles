@@ -20,10 +20,13 @@ class fileHandler {
 			this.subido = true;
 
 			var sel = document.getElementById("cursoDeseado");
+			sel.removeAttribute("hidden");
+			this.button.removeAttribute("disabled");
 
-			fetch('/cursos', {
-				method: 'GET',
-			})
+			function cargarCursos(){
+				fetch('/cursos', {
+					method: 'GET',
+				})
 				.then(res => res.json())
 				.then(function (res) {
 					sel.innerHTML = "";
@@ -33,37 +36,42 @@ class fileHandler {
 						opt.value = res[i].nombre;
 						sel.appendChild(opt);
 					}
+					
+					cambio();
 				})
 				.catch(function (e) {
 					console.log('Error', e);
 				});
-
-			sel.removeAttribute("hidden");
-			this.button.removeAttribute("disabled");
-
+			}
+			cargarCursos();
+			
 			var sel2 = document.getElementById("grupoDeseado");
 			function cambio() {
 				fetch('/grupos/' + sel.value, {
 					method: 'GET',
 				})
-					.then(res => res.json())
-					.then(function (res) {
-						sel2.innerHTML = "";
-						for (var i = 0; i < res.length; i++) {
-							var opt = document.createElement('option');
-							opt.innerHTML = res[i].nombre;
-							opt.value = res[i].nombre;
-							sel2.appendChild(opt);
-						}
-					})
-					.catch(function (e) {
-						console.log('Error', e);
-					});
+				.then(res => res.json())
+				.then(function (res) {
+					sel2.innerHTML = "";
+					for (var i = 0; i < res.length; i++) {
+						var opt = document.createElement('option');
+						opt.innerHTML = res[i].nombre;
+						opt.value = res[i].nombre;
+						sel2.appendChild(opt);
+					}
+				})
+				.catch(function (e) {
+					console.log('Error', e);
+				});
 
 				sel2.removeAttribute("hidden");
 			}
 			sel.onchange = cambio;
-			cambio();
+
+			var observer = new MutationObserver(function(mutations) {
+				cargarCursos();  
+			});
+			observer.observe(document.getElementById("selectCursosGrupo"), { attributes: true, childList: true, characterData: true });
 		}
 	}
 	uploadFiles() {
