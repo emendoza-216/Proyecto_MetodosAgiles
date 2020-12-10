@@ -57,6 +57,8 @@ class optionHandler {
           console.log(res);
           var html = ''; //curso, grupo, fecha, unidad, asistencias
           for (var key = 0, size = res.length; key < size; key++) {
+            var lista = res[key].asistencias.join(",");
+
             html += '<tr><td>'
               + res[key].grupo.curso.nombre
               + '</td><td>'
@@ -66,7 +68,11 @@ class optionHandler {
               + '</td><td>'
               + res[key].unidad
               + '</td><td>'
-              + res[key].asistencias
+              //+ res[key].asistencias
+              + `<button type="button" class="btn btn-light" data-toggle="collapse" data-target="#demo">Ver lista</button>
+                  <div id="demo" class="collapse">`.replace(/demo/g, "colapsable" + key)
+              + '<ul class="list-group"><li class="list-group-item list-group-item-dark">' + lista.replace(/,/gi,'</li><li class="list-group-item list-group-item-dark">') + '</li></ul>'
+              + '</div>' 
               + '</td></tr>';
           }
 

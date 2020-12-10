@@ -61,7 +61,7 @@ function TablaAsistencias() {
         <button id="buscar">Buscar</button>
       </div>
       <br/>
-      <table className="tabla" id="tablaAsistencias">
+      <table class="table table-striped table-sm table-dark" id="tablaAsistencias">
           <thead>
             <tr>
               <th>Curso</th>
