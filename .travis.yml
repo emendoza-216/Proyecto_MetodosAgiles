@@ -5,4 +5,4 @@ jdk:
 addons:
   sonarcloud: true
 script:
-  - sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=DahirVV-github -Dsonar.projectKey=Proyecto_MetodosAgiles -Dsonar.sources='./src' -X
+  - sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=emendoza-216 -Dsonar.projectKey=Proyecto_MetodosAgiles -Dsonar.sources='./src' -X
