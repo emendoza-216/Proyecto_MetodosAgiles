@@ -1,8 +1,2 @@
 language: node_js
 node_js: 12.14.1
-jdk:
- - oraclejdk8
-addons: 
-  sonarcloud: true
-script: 
- - sonar-scanner - Dsonar.login-$SONA_TOKEN -Dsonar.organization=DahirVV-github -Dsonar.projectKey.Proyecto_MetodosAgiles -Dsonar.sources='./src/app' -X
