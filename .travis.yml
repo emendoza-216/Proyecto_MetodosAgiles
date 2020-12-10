@@ -1,9 +1,10 @@
 language: node_js
 node_js: 12.14.1
+
 jdk:
   - oraclejdk8
 addons:
   sonarcloud: true
 script:
-  — npm run coverage
+  - npm run cover
   - sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=emendoza-216 -Dsonar.projectKey=emendoza-216_Proyecto_MetodosAgiles -Dsonar.sources='./src' -X

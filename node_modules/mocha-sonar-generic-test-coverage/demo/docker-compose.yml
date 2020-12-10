@@ -1,0 +1,8 @@
+version: '2'
+services:
+  sonar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sonarqube
+    image: defreitas/sonarqube:6.3.1-alpine
