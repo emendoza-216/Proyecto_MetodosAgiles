@@ -1,0 +1,9 @@
+sonar.projectKey=CalculatorNodeJS
+sonar.projectName=CalculatorNodeJS
+sonar.projectVersion=0.0.1-SNAPSHOT
+sonar.sources=./app
+sonar.exclusions=.properties, Dockerfile, *.md, node_modules/**, test/**, coverage/**,*.sh, configuration.js
+sonar.tests=test/
+sonar.javascript.jstest.reportsPath=coverage
+sonar.javascript.lcov.reportPath=coverage/lcov.info
+sonar.sourceEncoding=UTF-8

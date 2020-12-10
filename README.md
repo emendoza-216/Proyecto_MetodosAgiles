@@ -1,3 +1,9 @@
+__Travis-ci__: [![Travis](https://img.shields.io/travis/diegopm2000/CalculatorNodeJS.svg)]()
+
+__Sonarcloud__: [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=bugs)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=sqale_index)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=code_smells)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=coverage)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)
+
 # Proyecto_MetodosAgiles
 Proyecto de la clase de Métodos Ágiles de Desarrollo
 
@@ -27,7 +33,3 @@ cursos que está impartiendo y las unidades/secciones de cada uno de ellos. Tamb
 contemplar un visualizador de asistencias por grupo, curso, unidad, y hasta por alumno
 (independientemente del curso o grupo al cual esté inscrito). El resto de los detalles se irán
 obteniendo en el transcurso del proyecto.
-
-__Travis-ci__: [![Travis](https://img.shields.io/travis/diegopm2000/CalculatorNodeJS.svg)]()
-
-__Sonarcloud__: [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=bugs)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=sqale_index)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=code_smells)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=CalculatorNodeJS&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=CalculatorNodeJS)
