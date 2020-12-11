@@ -11,7 +11,7 @@ addons:
   sonarcloud: true
     organization: "emendoza-216"
     token:
-      secure: "fbd4c1336d42b10c196283e295c1b11606071c2e"
+      secure: "783304e8be1928ae5cb6d2c0b299e9426ada97ee"
         
 install:
   - yarn install
