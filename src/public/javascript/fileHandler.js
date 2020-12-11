@@ -20,7 +20,7 @@ class fileHandler {
 			this.subido = true;
 
 			var sel = document.getElementById("cursoDeseado");
-			sel.removeAttribute("hidden");
+			//sel.removeAttribute("hidden");
 			this.button.removeAttribute("disabled");
 
 			function cargarCursos(){
@@ -64,7 +64,8 @@ class fileHandler {
 					console.log('Error', e);
 				});
 
-				sel2.removeAttribute("hidden");
+				//sel2.removeAttribute("hidden");
+				document.getElementById("uploadOptions").removeAttribute("hidden");
 			}
 			sel.onchange = cambio;
 
