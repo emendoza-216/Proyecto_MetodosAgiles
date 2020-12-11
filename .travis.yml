@@ -1,10 +1,18 @@
 language: node_js
 node_js: 12.14.1
 
+cache: yarn
+
 jdk:
   - oraclejdk8
 addons:
   sonarcloud: true
+  organization: "emendoza-216"
+
+install:
+  - yarn install
+
 script:
-  - npm run coverage
+  - yarn build
+  - npm run test
   - sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=emendoza-216 -Dsonar.projectKey=emendoza-216_Proyecto_MetodosAgiles -Dsonar.sources='./src' -X
