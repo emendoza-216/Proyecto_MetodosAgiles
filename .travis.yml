@@ -1,14 +1,18 @@
 language: node_js
 node_js: 12.14.1
 
+dist: xenial
+
 cache: yarn
 
 jdk:
   - oraclejdk8
 addons:
   sonarcloud: true
-  organization: "emendoza-216"
-
+    organization: "emendoza-216"
+    token:
+      secure: "fbd4c1336d42b10c196283e295c1b11606071c2e"
+        
 install:
   - yarn install
 
