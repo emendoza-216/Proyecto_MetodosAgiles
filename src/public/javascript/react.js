@@ -36,7 +36,9 @@ function Dropbox() {
         <br/>
       </section>
       <button id="uploadButton" disabled>Subir Archivos</button>
-      <form>
+      <form id="uploadOptions">
+        <b>Seleccione Grupo y Curso donde registrara la asistencia</b>
+        <br></br>
         <select id="cursoDeseado" hidden></select>
         <select id="grupoDeseado" hidden></select>
       </form>
@@ -57,11 +59,10 @@ function TablaAsistencias() {
         </select>
         <b> Filtro:</b>
         <select id="filtro"></select>
-        <br/>
         <button id="buscar">Buscar</button>
       </div>
       <br/>
-      <table class="table table-striped table-sm table-dark" id="tablaAsistencias">
+      <table className="table table-striped table-sm table-dark" id="tablaAsistencias">
           <thead>
             <tr>
               <th>Curso</th>

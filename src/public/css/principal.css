@@ -27,8 +27,8 @@ body {
 }
 
 .modelo input {
-	width: 292px;
-	height: 35px;
+	width: 300px;
+	height: 40px;
 	margin-top: 5px;
 }
 
@@ -72,6 +72,7 @@ h3 {
 }
 
 #dropbox {
+	margin-top: 5px;
 	margin: 0 auto;
 	width: 50%;
 	height: 350px;
@@ -92,8 +93,37 @@ h3 {
 	margin-top: 25px;
 }
 
+#uploadButton{
+	background-color: var(--light_blue);
+	color: var(--dark_blue);
+	border: transparent solid 1px;
+	width: 120px;
+	height: 40px;
+	margin-left: 25px;
+}
+
+#uploadOptions b{
+	margin-left: 25px;
+}
+
+#uploadOptions select{
+	width: 200px;
+	height: 40px;
+	text-align: center;
+	margin-left: 25px;
+}
+
 #uploadIcon {
 	margin-top: 100px;
 	margin-bottom: 20px;
 	width: 75px;
+}
+
+#buscar {
+	background-color: var(--light_blue);
+	color: var(--dark_blue);
+	border: transparent solid 1px;
+	width: 70px;
+	height: 30px;
+	margin-left: 5px;
 }
