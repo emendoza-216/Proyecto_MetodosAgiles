@@ -6,8 +6,5 @@ jdk:
 addons:
   sonarcloud: true
 
-ignore:
-  - "coverage" 
-
 script:
   - sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=emendoza-216 -Dsonar.projectKey=emendoza-216_Proyecto_MetodosAgiles -Dsonar.sources='./src' -X
