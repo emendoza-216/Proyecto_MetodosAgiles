@@ -7,11 +7,12 @@ cache: yarn
 
 jdk:
   - oraclejdk8
+  
 addons:
   sonarcloud: true
     organization: "emendoza-216"
     token:
-      secure: "783304e8be1928ae5cb6d2c0b299e9426ada97ee"
+      secure: "fbd4c1336d42b10c196283e295c1b11606071c2e"
         
 install:
   - yarn install
@@ -19,4 +20,4 @@ install:
 script:
   - yarn build
   - npm run test
-  - sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.organization=emendoza-216 -Dsonar.projectKey=emendoza-216_Proyecto_MetodosAgiles -Dsonar.sources='./src' -X
+  - sonar-scanner - Dsonar.login=$SONAR_TOKEN - Dsonar.organization=emendoza-216 - Dsonar.projectKey=emendoza-216_Proyecto_MetodosAgiles - Dsonar.sources='./src' -X
